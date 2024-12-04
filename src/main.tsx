@@ -4,10 +4,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./index.css";
 
-import { LandingPage } from "./ui/pages/landing-page";
-import { SchedulePage } from "./ui/pages/schedule-page";
-import { Layout } from "./ui/pages/layout";
-import { PaymentPage } from "./ui/pages/payment-page";
+import { LandingPage } from "./pages/landing-page";
+import { SchedulePage } from "./pages/schedule-page";
+import { Layout } from "./pages/layout";
+import { PaymentPage } from "./pages/payment-page";
 
 export enum ERoutes {
   HOME = "/",
