@@ -2,10 +2,16 @@ import { useMemo, useState } from "react";
 import useFetch from "@/hooks/useFetch";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { ERoutes } from "@/main";
 
 export const SchedulePage = () => {
-  const { error, isPending, data } = useFetch("http://localhost:8080/bands");
-  const [amountOfDataShown, setAmountOfDataShown] = useState(10);
+  const { error, isPending, data } = useFetch(
+    "https://pentagonal-holy-beetle.glitch.me/bands"
+    // https://pentagonal-holy-beetle.glitch.me/bands
+    // http://localhost:8080/bands
+  );
+  const [amountOfDataShown, setAmountOfDataShown] = useState(12);
 
   // "Cacher" den slicede data, indtil amountOfDataShown eller data ændrer sig.
   const slicedData = useMemo(
@@ -20,14 +26,23 @@ export const SchedulePage = () => {
       {isPending && <LoadingSpinner />}
       {data &&
         slicedData.map((artist: any, i: number) => {
-          return <p key={i}>{artist.name}</p>;
+          return (
+            <Link
+              to={`${ERoutes.ARTIST}/${artist.slug}`}
+              key={i}
+              className="inline-block p-2 bg-red-400"
+            >
+              <h1>{artist.name}</h1>
+            </Link>
+          );
         })}
 
-      {amountOfDataShown < data?.length && (
-        <Button onClick={() => setAmountOfDataShown(amountOfDataShown + 40)}>
-          Vis flere
-        </Button>
-      )}
+      <Button
+        onClick={() => setAmountOfDataShown(amountOfDataShown + 12)}
+        disabled={amountOfDataShown >= data?.length}
+      >
+        Vis flere
+      </Button>
     </div>
   );
 };
