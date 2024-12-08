@@ -1,29 +1,19 @@
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { ERoutes } from "@/main.tsx";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export const Layout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="bg-red-400 p-6">
+      <header className="p-6">
         <div className="max-w-[1200px] mx-auto flex flex-col items-end">
           <Sheet open={isMenuOpen} onOpenChange={(open) => setIsMenuOpen(open)}>
             <SheetTrigger>Open</SheetTrigger>
             <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
-              </SheetHeader>
-
-              <nav>
+              <nav className="flex flex-col gap-10">
                 <Link to={ERoutes.HOME} onClick={() => setIsMenuOpen(false)}>
                   Home
                 </Link>
