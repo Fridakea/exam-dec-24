@@ -5,21 +5,23 @@ import { Minus, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { FC } from "react";
+import { twMerge } from "tailwind-merge";
 
 type PlusMinusInputProps = {
   field: ControllerRenderProps<any>;
   min?: number;
   max?: number;
   step?: number;
+  className?: string;
 };
 
-export const PlusMinusInput: FC<PlusMinusInputProps> = ({ field, min = 0, max = 999, step = 1 }) => {
+export const PlusMinusInput: FC<PlusMinusInputProps> = ({ field, min = 0, max = 999, step = 1, className }) => {
   return (
-    <div className="flex flex-row gap-2">
+    <div className={twMerge("flex flex-row items-center gap-1", className)}>
       <Button
-        size="icon"
+        size="sm"
         type="button"
-        className="h-8 w-8 shrink-0 rounded-full"
+        variant="secondary"
         onClick={() => field.onChange(Math.max(min, field.value - step))}
         disabled={field.value <= min}
       >
@@ -33,9 +35,9 @@ export const PlusMinusInput: FC<PlusMinusInputProps> = ({ field, min = 0, max = 
         onChange={(e) => field.onChange(clamp(min, Number(e.currentTarget.value), max))}
       />
       <Button
-        size="icon"
+        size="sm"
         type="button"
-        className="h-8 w-8 shrink-0 rounded-full"
+        variant="secondary"
         onClick={() => field.onChange(Math.min(field.value + step, max))}
         disabled={field.value >= max}
       >

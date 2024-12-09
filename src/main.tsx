@@ -15,6 +15,7 @@ import { Step3ContactInformationPage } from "./pages/ticket-multistep/step3-cont
 import { Step4PaymentInformationPage } from "./pages/ticket-multistep/step4-payment-information";
 import { Step5ConfirmationPage } from "./pages/ticket-multistep/step5-confirmation";
 import { Step6ReceiptPage } from "./pages/ticket-multistep/step6-receipt";
+import { TicketFlowLayout } from "./pages/ticket-multistep/ticket-flow-layout";
 
 export enum ERoutes {
   HOME = "/",
@@ -33,28 +34,13 @@ createRoot(document.getElementById("root")!).render(
           <Route path={`${ERoutes.ARTIST}/:slug`} element={<ArtistPage />} />
         </Route>
 
-        <Route path={ERoutes.BUY_TICKET}>
+        <Route path={ERoutes.BUY_TICKET} element={<TicketFlowLayout />}>
           <Route index element={<Step1BuyTicketsPage />} />
-          <Route
-            path={`${ERoutes.BUY_TICKET}/2`}
-            element={<Step2BuyAddonsPage />}
-          />
-          <Route
-            path={`${ERoutes.BUY_TICKET}/3`}
-            element={<Step3ContactInformationPage />}
-          />
-          <Route
-            path={`${ERoutes.BUY_TICKET}/4`}
-            element={<Step4PaymentInformationPage />}
-          />
-          <Route
-            path={`${ERoutes.BUY_TICKET}/5`}
-            element={<Step5ConfirmationPage />}
-          />
-          <Route
-            path={`${ERoutes.BUY_TICKET}/6`}
-            element={<Step6ReceiptPage />}
-          />
+          <Route path={`${ERoutes.BUY_TICKET}/2`} element={<Step2BuyAddonsPage />} />
+          <Route path={`${ERoutes.BUY_TICKET}/3`} element={<Step3ContactInformationPage />} />
+          <Route path={`${ERoutes.BUY_TICKET}/4`} element={<Step4PaymentInformationPage />} />
+          <Route path={`${ERoutes.BUY_TICKET}/5`} element={<Step5ConfirmationPage />} />
+          <Route path={`${ERoutes.BUY_TICKET}/6`} element={<Step6ReceiptPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

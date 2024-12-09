@@ -64,8 +64,35 @@
     @apply bg-background text-foreground;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  button,
+  label {
+    @apply uppercase no-underline;
+  }
+
   h1 {
-    @apply no-underline;
+    @apply ~text-4xl/6xl;
     font-family: "Nova Cut";
+  }
+
+  p {
+    @apply ~text-base/lg;
+  }
+
+  /* Remove arrows on number input on Chrome, Safari, Edge & Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Remove arrows on number input on Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }
