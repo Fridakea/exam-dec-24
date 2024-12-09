@@ -23,8 +23,11 @@ export const Layout = () => {
                 >
                   Schedule
                 </Link>
-                <Link to={ERoutes.PAYMENT} onClick={() => setIsMenuOpen(false)}>
-                  Payment
+                <Link
+                  to={ERoutes.BUY_TICKET}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Køb billet
                 </Link>
               </nav>
             </SheetContent>
