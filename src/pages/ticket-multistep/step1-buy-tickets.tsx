@@ -2,32 +2,36 @@ import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+// import useFetch from "@/hooks/useFetch";
+import { apiBaseUrl, ERoutes } from "@/main";
 
 import { Button } from "@/components/ui/button";
-import { ERoutes } from "@/main";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
-import { useState } from "react";
 import { mockApiAreas } from "@/mockdata";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
   vip_ticket_amount: z.number().int().min(0).max(20),
+  area: z.string(),
 });
 
 type FormData = z.infer<typeof formSchema>;
 
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
-  const [checkedRadio, setCheckedRadio] = useState("Nilfheim");
+
+  // const { error, isPending, data } = useFetch(`${apiBaseUrl}/bands`);*
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ticket_amount: 0,
       vip_ticket_amount: 0,
+      area: undefined,
     },
+    mode: "onSubmit",
   });
 
   // True/false baseret på om der er valgt mindst 1 billet i alt.
@@ -39,15 +43,10 @@ export const Step1BuyTicketsPage = () => {
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };
 
-  console.log(checkedRadio);
-
   return (
     <Form {...formObject}>
       <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
-        <h1 className="mb-8 flex items-start">
-          Køb biletter
-          <span className="~text-lg/xl -mt-2">*</span>
-        </h1>
+        <h1 className="mb-8">Køb biletter</h1>
 
         <FormField
           control={formObject.control}
@@ -83,33 +82,42 @@ export const Step1BuyTicketsPage = () => {
           )}
         />
 
-        <h1 className="mt-10 mb-8  flex items-start">
-          Tilkøb
-          <span className="~text-lg/xl -mt-2">*</span>
-        </h1>
+        <h1 className="mt-10 mb-8">Tilkøb</h1>
 
         <FormField
           name="area"
           render={() => (
             <FormItem className="mb-12">
-              <FormLabel>Vælg camping område</FormLabel>
-              <FormDescription>Reservationsgebyr på 99 kr</FormDescription>
+              <div className="mb-4 *:mb-2">
+                <FormLabel className="flex items-start gap-1">
+                  Vælg camping område
+                  <span className="~text-2xs/xs -mt-1">*</span>
+                </FormLabel>
+                <FormDescription>Reservationsgebyr på 99 kr</FormDescription>
+              </div>
 
               <div className="flex flex-row flex-wrap gap-4">
                 {mockApiAreas.map((areaObj) => (
-                  <FormItem key={areaObj.area}>
-                    <FormControl>
-                      <RadioCard
-                        id={areaObj.area}
-                        value={areaObj.area}
-                        name="area-radio-group"
-                        header={areaObj.area}
-                        subHeader={`${areaObj.available} ledige pladser`}
-                        isChecked={checkedRadio === areaObj.area}
-                        onChange={(newValue) => setCheckedRadio(newValue)}
-                      />
-                    </FormControl>
-                  </FormItem>
+                  <FormField
+                    key={areaObj.area}
+                    control={formObject.control}
+                    name="area"
+                    render={({ field }) => (
+                      <FormItem key={areaObj.area}>
+                        <FormControl>
+                          <RadioCard
+                            id={areaObj.area}
+                            value={areaObj.area}
+                            name="area-radio-group"
+                            header={areaObj.area}
+                            subHeader={`${areaObj.available} ledige pladser`}
+                            isChecked={field.value === areaObj.area}
+                            onChange={(newValue) => field.onChange(newValue)}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
                 ))}
               </div>
               <FormMessage />

@@ -30,6 +30,7 @@ export const PlusMinusInput: FC<PlusMinusInputProps> = ({ field, min = 0, max = 
       </Button>
       <Input
         {...field}
+        className="w-12 text-center"
         type="number"
         step={step}
         onChange={(e) => field.onChange(clamp(min, Number(e.currentTarget.value), max))}

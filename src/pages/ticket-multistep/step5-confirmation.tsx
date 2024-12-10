@@ -14,9 +14,11 @@ export const Step5ConfirmationPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Se overblik</h1>
-      <Button type="submit">Gennemfør køb</Button>
+    <form onSubmit={handleSubmit} className="flex flex-col">
+      <h1>Din Bestilling</h1>
+      <Button variant="accent" className="self-end" type="submit">
+        Gennemfør køb
+      </Button>
     </form>
   );
 };

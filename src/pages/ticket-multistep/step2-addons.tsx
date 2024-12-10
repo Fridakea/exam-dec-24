@@ -48,7 +48,7 @@ export const Step2BuyAddonsPage = () => {
           <span className="~text-base/lg -mt-2">(Optional)</span>
         </h1>
 
-        <div className="mb-10 flex justify-between items-center">
+        <div className="mb-10 flex justify-between items-center gap-3">
           <div className="flex flex-col leading-none">
             <label
               htmlFor="terms1"
@@ -62,20 +62,6 @@ export const Step2BuyAddonsPage = () => {
 
           <Checkbox id="terms1" />
         </div>
-
-        {/* <FormField
-        name="green-fee"
-        render={() => (
-          <FormItem>
-            <FormLabel>Green camping</FormLabel>
-            <FormDescription>Modtag kun genanvendeligt og miljøbevist festival gear</FormDescription>
-            <FormControl>
-              <Checkbox />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      /> */}
 
         <h2 className="mb-8">Camping Gear</h2>
 
