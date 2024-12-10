@@ -8,6 +8,8 @@ import { ERoutes } from "@/main";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
+import { useState } from "react";
+import { mockApiAreas } from "@/mockdata";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
@@ -18,6 +20,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
+  const [checkedRadio, setCheckedRadio] = useState("Nilfheim");
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -36,24 +39,27 @@ export const Step1BuyTicketsPage = () => {
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };
 
+  console.log(checkedRadio);
+
   return (
     <Form {...formObject}>
       <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
         <h1 className="mb-8 flex items-start">
           Køb biletter
-          <span className="~text-xl/2xl -mt-2">*</span>
+          <span className="~text-lg/xl -mt-2">*</span>
         </h1>
+
         <FormField
           control={formObject.control}
           name="ticket_amount"
           render={({ field }) => (
-            <FormItem className="flex flex-row mb-5">
-              <div className="flex flex-col flex-1">
+            <FormItem className="mb-6 flex flex-row items-center">
+              <div className="flex flex-col gap-1 flex-1">
                 <FormLabel>Partout billet</FormLabel>
                 <FormDescription>799 KR</FormDescription>
               </div>
               <FormControl>
-                <PlusMinusInput field={field} max={20} className="" />
+                <PlusMinusInput field={field} max={20} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -64,13 +70,13 @@ export const Step1BuyTicketsPage = () => {
           control={formObject.control}
           name="vip_ticket_amount"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center mb-5">
-              <div className="flex flex-col flex-1">
-                <FormLabel className="">VIP Partout billet</FormLabel>
+            <FormItem className="mb-6 flex flex-row items-center">
+              <div className="flex flex-col gap-1 flex-1">
+                <FormLabel>VIP Partout billet</FormLabel>
                 <FormDescription>1299 KR</FormDescription>
               </div>
               <FormControl>
-                <PlusMinusInput field={field} max={20} className="" />
+                <PlusMinusInput field={field} max={20} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -79,7 +85,7 @@ export const Step1BuyTicketsPage = () => {
 
         <h1 className="mt-10 mb-8  flex items-start">
           Tilkøb
-          <span className="~text-xl/2xl -mt-2">*</span>
+          <span className="~text-lg/xl -mt-2">*</span>
         </h1>
 
         <FormField
@@ -90,65 +96,21 @@ export const Step1BuyTicketsPage = () => {
               <FormDescription>Reservationsgebyr på 99 kr</FormDescription>
 
               <div className="flex flex-row flex-wrap gap-4">
-                <FormItem>
-                  <FormControl>
-                    <RadioCard
-                      id="svartheim"
-                      value="Svartheim"
-                      name="Area"
-                      header="Svartheim"
-                      subHeader="100 ledige pladser"
-                    />
-                  </FormControl>
-                </FormItem>
-
-                <FormItem>
-                  <FormControl>
-                    <RadioCard
-                      id="nilfheim"
-                      value="Nilfheim"
-                      name="Area"
-                      header="Nilfheim"
-                      subHeader="300 ledige pladser"
-                    />
-                  </FormControl>
-                </FormItem>
-
-                <FormItem>
-                  <FormControl>
-                    <RadioCard
-                      id="helheim"
-                      value="Helheim"
-                      name="Area"
-                      header="Helheim"
-                      subHeader="100 ledige pladser"
-                    />
-                  </FormControl>
-                </FormItem>
-
-                <FormItem>
-                  <FormControl>
-                    <RadioCard
-                      id="muspelheim"
-                      value="Muspelheim"
-                      name="Area"
-                      header="Muspelheim"
-                      subHeader="300 ledige pladser"
-                    />
-                  </FormControl>
-                </FormItem>
-
-                <FormItem>
-                  <FormControl>
-                    <RadioCard
-                      id="alfheim"
-                      value="Alfheim"
-                      name="Area"
-                      header="Alfheim"
-                      subHeader="300 ledige pladser"
-                    />
-                  </FormControl>
-                </FormItem>
+                {mockApiAreas.map((areaObj) => (
+                  <FormItem key={areaObj.area}>
+                    <FormControl>
+                      <RadioCard
+                        id={areaObj.area}
+                        value={areaObj.area}
+                        name="area-radio-group"
+                        header={areaObj.area}
+                        subHeader={`${areaObj.available} ledige pladser`}
+                        isChecked={checkedRadio === areaObj.area}
+                        onChange={(newValue) => setCheckedRadio(newValue)}
+                      />
+                    </FormControl>
+                  </FormItem>
+                ))}
               </div>
               <FormMessage />
             </FormItem>

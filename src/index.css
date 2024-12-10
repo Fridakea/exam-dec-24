@@ -76,7 +76,7 @@
   }
 
   h1 {
-    @apply ~text-4xl/6xl;
+    @apply ~text-3xl/5xl;
     font-family: "Nova Cut";
   }
 
