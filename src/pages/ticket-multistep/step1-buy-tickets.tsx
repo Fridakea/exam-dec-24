@@ -10,6 +10,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
 import { mockApiAreas } from "@/mockdata";
+import { useBookingStore } from "@/stores/booking-store";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
@@ -21,6 +22,8 @@ type FormData = z.infer<typeof formSchema>;
 
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
+
+  const { setTotalTickets } = useBookingStore();
 
   // const { error, isPending, data } = useFetch(`${apiBaseUrl}/bands`);*
 
@@ -39,6 +42,9 @@ export const Step1BuyTicketsPage = () => {
 
   const handleSubmit = (values: FormData) => {
     console.log("values: ", values);
+
+    const { ticket_amount, vip_ticket_amount } = formObject.getValues();
+    setTotalTickets(ticket_amount + vip_ticket_amount);
 
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };

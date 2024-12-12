@@ -1,4 +1,3 @@
-import { FormEventHandler } from "react";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -6,16 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ERoutes } from "@/main";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useBookingStore } from "@/stores/booking-store";
 
 const formSchema = z.object({
   contact_info: z.array(
     z.object({
       first_name: z.string().min(2, "Fornavnet skal være mindst 2 bogstaver"),
       last_name: z.string().min(2, "Efternavnet skal være mindst 2 bogstaver"),
-      telephone: z.number().int().min(8, "Et telefon nummer er minimum 8 cifre"),
+      telephone: z.string().min(8, "Et telefon nummer er minimum 8 cifre"),
       email: z.string().email("Ugyldig email"),
     })
   ),
@@ -23,10 +23,11 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const ticketsBooked = 3;
-const ticketNumbers = Array.from({ length: ticketsBooked }, (_, i) => i + 1);
-
 export const Step3ContactInformationPage = () => {
+  const { totalTickets } = useBookingStore();
+
+  const ticketNumbers = Array.from({ length: totalTickets }, (_, i) => i + 1);
+
   const navigate = useNavigate();
 
   const formObject = useForm<FormData>({
@@ -35,12 +36,24 @@ export const Step3ContactInformationPage = () => {
       contact_info: ticketNumbers.map((_) => ({
         first_name: "",
         last_name: "",
-        telephone: undefined,
+        telephone: "",
         email: "",
       })),
     },
     mode: "onTouched",
   });
+
+  // Makes a new list of contact info where the property is updated
+  const getUpdatedContactInfo = (
+    propertyName: "first_name" | "last_name" | "telephone" | "email",
+    newValue: any,
+    ticket: number,
+    contactInfo: any[]
+  ) => {
+    return contactInfo.map((item, i) =>
+      i === ticket - 1 ? { ...contactInfo[ticket - 1], [propertyName]: newValue } : item
+    );
+  };
 
   const handleSubmit = (values: FormData) => {
     console.log(values);
@@ -72,68 +85,61 @@ export const Step3ContactInformationPage = () => {
                       <FormItem>
                         <FormLabel>Billet {ticket}</FormLabel>
                         <FormControl>
-                          <fieldset>
-                            <div className="flex flex-col sm:flex-row gap-3 *:flex-1">
+                          <fieldset className="flex flex-col sm:flex-row gap-3 *:flex-1 border border-white">
+                            <div>
                               <label>Fornavn</label>
                               <Input
                                 value={field.value[ticket - 1]?.first_name}
                                 onChange={(e) =>
                                   field.onChange(
-                                    field.value.map((item, i) =>
-                                      i === ticket - 1
-                                        ? { ...field.value[ticket - 1], first_name: e.currentTarget.value }
-                                        : item
-                                    )
+                                    getUpdatedContactInfo("first_name", e.currentTarget.value, ticket, field.value)
                                   )
                                 }
                                 type="text"
                               />
-
-                              <FormLabel>Efternavn</FormLabel>
-
-                              <Input type="text" />
                             </div>
 
-                            {/* <div className="flex flex-col sm:flex-row gap-3">
-                              <div className="flex-1">
-                                <FormField
-                                  control={formObject.control}
-                                  name="telephone"
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormLabel>Telefon</FormLabel>
-                                      <FormControl>
-                                        <Input
-                                          {...field}
-                                          type="tel"
-                                          className="max-w-[65%] sm:max-w-full"
-                                          onChange={(e) => field.onChange(Number(e.currentTarget.value))}
-                                        />
-                                      </FormControl>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
-                                />
-                              </div>
+                            <div>
+                              <label>Efternavn</label>
+                              <Input
+                                value={field.value[ticket - 1]?.last_name}
+                                onChange={(e) =>
+                                  field.onChange(
+                                    getUpdatedContactInfo("last_name", e.currentTarget.value, ticket, field.value)
+                                  )
+                                }
+                                type="text"
+                              />
+                            </div>
 
-                              <div className="flex-[2]">
-                                <FormField
-                                  control={formObject.control}
-                                  name="email"
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormLabel>Email</FormLabel>
-                                      <FormControl>
-                                        <Input type="email" {...field} />
-                                      </FormControl>
-                                      <FormMessage />
-                                    </FormItem>
-                                  )}
-                                />
-                              </div>
-                            </div> */}
+                            <div>
+                              <label>Telefon</label>
+                              <Input
+                                value={field.value[ticket - 1]?.telephone}
+                                onChange={(e) =>
+                                  field.onChange(
+                                    getUpdatedContactInfo("telephone", e.currentTarget.value, ticket, field.value)
+                                  )
+                                }
+                                type="tel"
+                              />
+                            </div>
+
+                            <div>
+                              <label>Email</label>
+                              <Input
+                                value={field.value[ticket - 1]?.email}
+                                onChange={(e) =>
+                                  field.onChange(
+                                    getUpdatedContactInfo("email", e.currentTarget.value, ticket, field.value)
+                                  )
+                                }
+                                type="email"
+                              />
+                            </div>
                           </fieldset>
                         </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -156,83 +162,10 @@ export const Step3ContactInformationPage = () => {
           </div>
         </div>
 
-        <Button disabled={formObject.formState.isValid} variant="accent" className="self-end" type="submit">
+        <Button disabled={!formObject.formState.isValid} variant="accent" className="self-end" type="submit">
           Til betaling
         </Button>
       </form>
     </Form>
   );
 };
-
-{
-  /* <>
-<div className="flex flex-col sm:flex-row gap-3 *:flex-1">
-  <FormField
-    control={formObject.control}
-    name="first_name"
-    render={({ field }) => (
-      <FormItem>
-        <FormLabel>Fornavn</FormLabel>
-        <FormControl>
-          <Input type="text" {...field} />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-
-  <FormField
-    control={formObject.control}
-    name="last_name"
-    render={({ field }) => (
-      <FormItem>
-        <FormLabel>Efternavn</FormLabel>
-        <FormControl>
-          <Input type="text" {...field} />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    )}
-  />
-</div>
-
-<div className="flex flex-col sm:flex-row gap-3">
-  <div className="flex-1">
-    <FormField
-      control={formObject.control}
-      name="telephone"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Telefon</FormLabel>
-          <FormControl>
-            <Input
-              {...field}
-              type="tel"
-              className="max-w-[65%] sm:max-w-full"
-              onChange={(e) => field.onChange(Number(e.currentTarget.value))}
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  </div>
-
-  <div className="flex-[2]">
-    <FormField
-      control={formObject.control}
-      name="email"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>Email</FormLabel>
-          <FormControl>
-            <Input type="email" {...field} />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  </div>
-</div>
-</> */
-}
