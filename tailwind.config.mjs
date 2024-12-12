@@ -1,8 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 
 import fluid, { extract, screens, fontSize } from "fluid-tailwind";
+import animate from "tailwindcss-animate";
 
-module.exports = {
+export default {
   darkMode: ["class"],
   content: {
     files: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
@@ -83,5 +84,5 @@ module.exports = {
       },
     },
   },
-  plugins: [fluid, require("tailwindcss-animate")],
+  plugins: [fluid, animate],
 };

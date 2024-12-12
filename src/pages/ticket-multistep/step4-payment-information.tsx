@@ -4,11 +4,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ERoutes } from "@/main";
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
 
 const formSchema = z.object({
   cardholder_name: z.string().min(2, "Navnet skal være mindst 2 bogstaver"),
@@ -18,6 +20,8 @@ const formSchema = z.object({
 });
 
 type FormData = z.infer<typeof formSchema>;
+
+const dateRegex = "^(0[1-9]?|1[0-2]?)?\\d{0,2}$";
 
 export const Step4PaymentInformationPage = () => {
   const navigate = useNavigate();
@@ -81,7 +85,19 @@ export const Step4PaymentInformationPage = () => {
                   <FormItem>
                     <FormLabel>Udløbsdato (MM/ÅÅ)</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} />
+                      <InputOTP maxLength={4} pattern={dateRegex}>
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} {...field} />
+                          <InputOTPSlot index={1} {...field} />
+                        </InputOTPGroup>
+                        <InputOTPSeparator />
+                        <InputOTPGroup>
+                          <InputOTPSlot index={2} {...field} />
+                          <InputOTPSlot index={3} {...field} />
+                        </InputOTPGroup>
+                      </InputOTP>
+
+                      {/* <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
