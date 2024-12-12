@@ -11,20 +11,34 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const formSchema = z.object({
-  first_name: z.string().min(2, "Fornavnet skal være mindst 2 bogstaver"),
-  last_name: z.string().min(2, "Efternavnet skal være mindst 2 bogstaver"),
-  telephone: z.number().int().min(8, "Et telefon nummer er minimum 8 cifre"),
-  email: z.string().email("Ugyldig email"),
+  contact_info: z.array(
+    z.object({
+      first_name: z.string().min(2, "Fornavnet skal være mindst 2 bogstaver"),
+      last_name: z.string().min(2, "Efternavnet skal være mindst 2 bogstaver"),
+      telephone: z.number().int().min(8, "Et telefon nummer er minimum 8 cifre"),
+      email: z.string().email("Ugyldig email"),
+    })
+  ),
 });
 
 type FormData = z.infer<typeof formSchema>;
+
+const ticketsBooked = 3;
+const ticketNumbers = Array.from({ length: ticketsBooked }, (_, i) => i + 1);
 
 export const Step3ContactInformationPage = () => {
   const navigate = useNavigate();
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: undefined,
+    defaultValues: {
+      contact_info: ticketNumbers.map((_) => ({
+        first_name: "",
+        last_name: "",
+        telephone: undefined,
+        email: "",
+      })),
+    },
     mode: "onTouched",
   });
 
@@ -44,74 +58,89 @@ export const Step3ContactInformationPage = () => {
           <p>Type Billet</p>
           <p>Festival gæst nr. {"i"}</p>
 
-          <div className="flex flex-col sm:flex-row gap-3 *:flex-1">
-            <FormField
-              control={formObject.control}
-              name="first_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Fornavn</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <FormField
+            control={formObject.control}
+            name="contact_info"
+            render={() => (
+              <FormItem>
+                {ticketNumbers.map((ticket) => (
+                  <FormField
+                    key={ticket}
+                    control={formObject.control}
+                    name="contact_info"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Billet {ticket}</FormLabel>
+                        <FormControl>
+                          <fieldset>
+                            <div className="flex flex-col sm:flex-row gap-3 *:flex-1">
+                              <label>Fornavn</label>
+                              <Input
+                                value={field.value[ticket - 1]?.first_name}
+                                onChange={(e) =>
+                                  field.onChange(
+                                    field.value.map((item, i) =>
+                                      i === ticket - 1
+                                        ? { ...field.value[ticket - 1], first_name: e.currentTarget.value }
+                                        : item
+                                    )
+                                  )
+                                }
+                                type="text"
+                              />
 
-            <FormField
-              control={formObject.control}
-              name="last_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Efternavn</FormLabel>
-                  <FormControl>
-                    <Input type="text" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+                              <FormLabel>Efternavn</FormLabel>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex-1">
-              <FormField
-                control={formObject.control}
-                name="telephone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Telefon</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="tel"
-                        className="max-w-[65%] sm:max-w-full"
-                        onChange={(e) => field.onChange(Number(e.currentTarget.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                              <Input type="text" />
+                            </div>
 
-            <div className="flex-[2]">
-              <FormField
-                control={formObject.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+                            {/* <div className="flex flex-col sm:flex-row gap-3">
+                              <div className="flex-1">
+                                <FormField
+                                  control={formObject.control}
+                                  name="telephone"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Telefon</FormLabel>
+                                      <FormControl>
+                                        <Input
+                                          {...field}
+                                          type="tel"
+                                          className="max-w-[65%] sm:max-w-full"
+                                          onChange={(e) => field.onChange(Number(e.currentTarget.value))}
+                                        />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
+
+                              <div className="flex-[2]">
+                                <FormField
+                                  control={formObject.control}
+                                  name="email"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Email</FormLabel>
+                                      <FormControl>
+                                        <Input type="email" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                              </div>
+                            </div> */}
+                          </fieldset>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </FormItem>
+            )}
+          />
         </div>
 
         <div className="mt-8 mb-10 flex gap-3 items-center">
@@ -127,10 +156,83 @@ export const Step3ContactInformationPage = () => {
           </div>
         </div>
 
-        <Button disabled={!formObject.formState.isValid} variant="accent" className="self-end" type="submit">
+        <Button disabled={formObject.formState.isValid} variant="accent" className="self-end" type="submit">
           Til betaling
         </Button>
       </form>
     </Form>
   );
 };
+
+{
+  /* <>
+<div className="flex flex-col sm:flex-row gap-3 *:flex-1">
+  <FormField
+    control={formObject.control}
+    name="first_name"
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel>Fornavn</FormLabel>
+        <FormControl>
+          <Input type="text" {...field} />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+
+  <FormField
+    control={formObject.control}
+    name="last_name"
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel>Efternavn</FormLabel>
+        <FormControl>
+          <Input type="text" {...field} />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+</div>
+
+<div className="flex flex-col sm:flex-row gap-3">
+  <div className="flex-1">
+    <FormField
+      control={formObject.control}
+      name="telephone"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Telefon</FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              type="tel"
+              className="max-w-[65%] sm:max-w-full"
+              onChange={(e) => field.onChange(Number(e.currentTarget.value))}
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  </div>
+
+  <div className="flex-[2]">
+    <FormField
+      control={formObject.control}
+      name="email"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input type="email" {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  </div>
+</div>
+</> */
+}
