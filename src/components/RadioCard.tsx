@@ -35,8 +35,8 @@ export const RadioCard: FC<RadioCardProps> = ({
       <label
         htmlFor={id}
         className={`${
-          isChecked ? "bg-red-400" : "bg-card"
-        } inline-block w-fit h-fit p-4  border-2 border-transparent text-card-foreground ~text-lg/xl rounded-md peer-hover:bg-accent peer-hover:text-accent-foreground cursor-pointer`}
+          isChecked ? "border-accent bg-card drop-shadow-accent" : "bg-card  border-transparent"
+        } inline-block w-fit h-fit p-4 border-2 text-card-foreground ~text-lg/xl rounded-md peer-hover:bg-accent peer-hover:text-accent-foreground cursor-pointer`}
       >
         {header}
         <p className="~text-xs/sm">{subHeader}</p>

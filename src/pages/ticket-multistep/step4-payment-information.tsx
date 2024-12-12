@@ -45,81 +45,86 @@ export const Step4PaymentInformationPage = () => {
   return (
     <Form {...formObject}>
       <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
-        <h1 className="mb-8">Betalingsoplysninger</h1>
+        <h1 className="mb-8 ~text-3xl/4xl">Betalingsoplysninger</h1>
 
-        <div className="flex flex-col gap-2 mb-8">
-          <FormField
-            control={formObject.control}
-            name="cardholder_name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Kortholders navn</FormLabel>
-                <FormControl>
-                  <Input {...field} type="text" className="" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <div className="flex flex-col payment-flex-row gap-3">
+          <div className="flex flex-col gap-2 flex-grow">
+            <FormField
+              control={formObject.control}
+              name="cardholder_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Kortholders navn</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="text" className="" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={formObject.control}
-            name="card_number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Kortnummer</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={formObject.control}
+              name="card_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Kortnummer</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-          <div className="flex gap-3">
-            <div className="flex-[1.5]">
-              <FormField
-                control={formObject.control}
-                name="expiration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Udløbsdato (MM/ÅÅ)</FormLabel>
-                    <FormControl>
-                      <InputOTP maxLength={4} pattern={dateRegex}>
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} {...field} />
-                          <InputOTPSlot index={1} {...field} />
-                        </InputOTPGroup>
-                        <InputOTPSeparator />
-                        <InputOTPGroup>
-                          <InputOTPSlot index={2} {...field} />
-                          <InputOTPSlot index={3} {...field} />
-                        </InputOTPGroup>
-                      </InputOTP>
+          <div className="flex flex-row payment-flex-col gap-2 mb-8">
+            <FormField
+              control={formObject.control}
+              name="expiration"
+              render={({ field }) => (
+                <FormItem className="min-w-[155px]">
+                  <FormLabel>
+                    Udløbsdato <span className="text-muted-foreground text-xs">(MM/ÅÅ)</span>
+                  </FormLabel>
+                  <FormControl>
+                    <InputOTP maxLength={4} pattern={dateRegex}>
+                      <InputOTPGroup>
+                        <InputOTPSlot index={0} {...field} />
+                        <InputOTPSlot index={1} {...field} />
+                      </InputOTPGroup>
+                      <InputOTPSeparator />
+                      <InputOTPGroup>
+                        <InputOTPSlot index={2} {...field} />
+                        <InputOTPSlot index={3} {...field} />
+                      </InputOTPGroup>
+                    </InputOTP>
 
-                      {/* <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} /> */}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+                    {/* <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} /> */}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <div className="flex-1">
-              <FormField
-                control={formObject.control}
-                name="cvc"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CVC</FormLabel>
-                    <FormControl>
-                      <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={formObject.control}
+              name="cvc"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>CVC</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="number"
+                      className="max-w-[170px]"
+                      onChange={(e) => field.onChange(Number(e.currentTarget.value))}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
         </div>
 

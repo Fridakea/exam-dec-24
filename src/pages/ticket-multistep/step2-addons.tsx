@@ -9,6 +9,7 @@ import { ERoutes } from "@/main";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { PlusMinusInput } from "@/components/PlusMinusInput";
+import { useBookingStore } from "@/stores/booking-store";
 
 const formSchema = z.object({
   chair_amount: z.number().int().min(0).max(20),
@@ -23,6 +24,16 @@ type FormData = z.infer<typeof formSchema>;
 export const Step2BuyAddonsPage = () => {
   const navigate = useNavigate();
 
+  // TODO save the addons the user chooses
+  const {
+    setGreenCamping,
+    setTotalChairs,
+    setTotalPavillons,
+    setTotalSmallTents,
+    setTotalMediumTents,
+    setTotalLargeTents,
+  } = useBookingStore();
+
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,14 +46,17 @@ export const Step2BuyAddonsPage = () => {
   });
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    console.log(e);
+    console.log("values: ", values);
+
+    setTotalChairs(formObject.getValues().ticket_amount);
+    setTotalVipTickets(formObject.getValues().vip_ticket_amount);
+
     navigate(`${ERoutes.BUY_TICKET}/3`);
   };
 
   return (
     <Form {...formObject}>
-      <form onSubmit={handleSubmit} className="flex flex-col">
+      <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
         <h1 className="mb-8 flex items-start gap-1">
           Tilvalg
           <span className="~text-base/lg -mt-2">(Optional)</span>

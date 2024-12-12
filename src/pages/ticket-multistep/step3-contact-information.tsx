@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useBookingStore } from "@/stores/booking-store";
+import { Label } from "@/components/ui/label";
 
 const formSchema = z.object({
   contact_info: z.array(
@@ -24,9 +25,10 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const Step3ContactInformationPage = () => {
-  const { totalTickets } = useBookingStore();
+  const { totalTickets, totalVipTickets } = useBookingStore();
 
   const ticketNumbers = Array.from({ length: totalTickets }, (_, i) => i + 1);
+  const vipTicketNumbers = Array.from({ length: totalVipTickets }, (_, i) => i + 1);
 
   const navigate = useNavigate();
 
@@ -68,74 +70,152 @@ export const Step3ContactInformationPage = () => {
         <h1 className="mb-8">Kontaktoplysninger</h1>
 
         <div className="*:mb-2">
-          <p>Type Billet</p>
-          <p>Festival gæst nr. {"i"}</p>
-
           <FormField
             control={formObject.control}
             name="contact_info"
             render={() => (
               <FormItem>
+                {vipTicketNumbers.map((ticket) => (
+                  <FormField
+                    key={ticket}
+                    control={formObject.control}
+                    name="contact_info"
+                    render={({ field }) => (
+                      <FormItem className="p-4 border border-accent rounded-md mb-8 shadow-md">
+                        <FormControl>
+                          <fieldset>
+                            <legend className="mb-4 ~text-lg/xl uppercase flex items-center gap-2">
+                              <span className="text-accent font-semibold ~text-3xl/4xl">VIP</span> partout billet
+                            </legend>
+                            <div className="flex flex-col sm:flex-row gap-3 *:flex-1">
+                              <div>
+                                <Label>Fornavn</Label>
+                                <Input
+                                  value={field.value[ticket - 1]?.first_name}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("first_name", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="text"
+                                />
+                              </div>
+
+                              <div className="mb-3">
+                                <label>Efternavn</label>
+                                <Input
+                                  value={field.value[ticket - 1]?.last_name}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("last_name", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="text"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col sm:flex-row gap-3">
+                              <div className="flex-1">
+                                <label>Telefon</label>
+                                <Input
+                                  value={field.value[ticket - 1]?.telephone}
+                                  className="max-w-[65%] sm:max-w-full"
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("telephone", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="tel"
+                                />
+                              </div>
+
+                              <div className="flex-[2]">
+                                <label>Email</label>
+                                <Input
+                                  value={field.value[ticket - 1]?.email}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("email", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="email"
+                                />
+                              </div>
+                            </div>
+                          </fieldset>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
+
                 {ticketNumbers.map((ticket) => (
                   <FormField
                     key={ticket}
                     control={formObject.control}
                     name="contact_info"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Billet {ticket}</FormLabel>
+                      <FormItem className="p-4 border border-muted-foreground rounded-md mb-8 shadow-md">
                         <FormControl>
-                          <fieldset className="flex flex-col sm:flex-row gap-3 *:flex-1 border border-white">
-                            <div>
-                              <label>Fornavn</label>
-                              <Input
-                                value={field.value[ticket - 1]?.first_name}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    getUpdatedContactInfo("first_name", e.currentTarget.value, ticket, field.value)
-                                  )
-                                }
-                                type="text"
-                              />
+                          <fieldset>
+                            <legend className="mb-4 ~text-lg/xl uppercase">Partout billet</legend>
+                            <div className="flex flex-col sm:flex-row gap-3 *:flex-1">
+                              <div>
+                                <Label>Fornavn</Label>
+                                <Input
+                                  value={field.value[ticket - 1]?.first_name}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("first_name", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="text"
+                                />
+                              </div>
+
+                              <div className="mb-3">
+                                <label>Efternavn</label>
+                                <Input
+                                  value={field.value[ticket - 1]?.last_name}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("last_name", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="text"
+                                />
+                              </div>
                             </div>
 
-                            <div>
-                              <label>Efternavn</label>
-                              <Input
-                                value={field.value[ticket - 1]?.last_name}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    getUpdatedContactInfo("last_name", e.currentTarget.value, ticket, field.value)
-                                  )
-                                }
-                                type="text"
-                              />
-                            </div>
+                            <div className="flex flex-col sm:flex-row gap-3">
+                              <div className="flex-1">
+                                <label>Telefon</label>
+                                <Input
+                                  value={field.value[ticket - 1]?.telephone}
+                                  className="max-w-[65%] sm:max-w-full"
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("telephone", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="tel"
+                                />
+                              </div>
 
-                            <div>
-                              <label>Telefon</label>
-                              <Input
-                                value={field.value[ticket - 1]?.telephone}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    getUpdatedContactInfo("telephone", e.currentTarget.value, ticket, field.value)
-                                  )
-                                }
-                                type="tel"
-                              />
-                            </div>
-
-                            <div>
-                              <label>Email</label>
-                              <Input
-                                value={field.value[ticket - 1]?.email}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    getUpdatedContactInfo("email", e.currentTarget.value, ticket, field.value)
-                                  )
-                                }
-                                type="email"
-                              />
+                              <div className="flex-[2]">
+                                <label>Email</label>
+                                <Input
+                                  value={field.value[ticket - 1]?.email}
+                                  onChange={(e) =>
+                                    field.onChange(
+                                      getUpdatedContactInfo("email", e.currentTarget.value, ticket, field.value)
+                                    )
+                                  }
+                                  type="email"
+                                />
+                              </div>
                             </div>
                           </fieldset>
                         </FormControl>
@@ -149,7 +229,7 @@ export const Step3ContactInformationPage = () => {
           />
         </div>
 
-        <div className="mt-8 mb-10 flex gap-3 items-center">
+        <div className="mb-10 flex gap-3 items-center">
           <Checkbox id="newsletter" />
 
           <div className="flex flex-col leading-none">

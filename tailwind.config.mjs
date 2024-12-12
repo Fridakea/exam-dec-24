@@ -60,6 +60,10 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+      dropShadow: {
+        primary: "2px 2px 5px rgba(246, 238, 224)",
+        accent: "0 0 3px rgba(119, 60, 20)",
+      },
       keyframes: {
         "accordion-down": {
           from: {

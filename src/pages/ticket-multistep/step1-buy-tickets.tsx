@@ -23,7 +23,7 @@ type FormData = z.infer<typeof formSchema>;
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
 
-  const { setTotalTickets } = useBookingStore();
+  const { setTotalTickets, setTotalVipTickets } = useBookingStore();
 
   // const { error, isPending, data } = useFetch(`${apiBaseUrl}/bands`);*
 
@@ -43,8 +43,8 @@ export const Step1BuyTicketsPage = () => {
   const handleSubmit = (values: FormData) => {
     console.log("values: ", values);
 
-    const { ticket_amount, vip_ticket_amount } = formObject.getValues();
-    setTotalTickets(ticket_amount + vip_ticket_amount);
+    setTotalTickets(formObject.getValues().ticket_amount);
+    setTotalVipTickets(formObject.getValues().vip_ticket_amount);
 
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };
