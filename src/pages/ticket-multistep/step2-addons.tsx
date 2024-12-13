@@ -12,11 +12,12 @@ import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { useBookingStore } from "@/stores/booking-store";
 
 const formSchema = z.object({
-  chair_amount: z.number().int().min(0).max(20),
-  pavillon_amount: z.number().int().min(0).max(20),
-  small_tent_amount: z.number().int().min(0).max(20),
-  medium_tent_amount: z.number().int().min(0).max(20),
-  large_tent_amount: z.number().int().min(0).max(20),
+  greenCamping: z.boolean(),
+  chairs: z.number().int().min(0).max(20),
+  pavillons: z.number().int().min(0).max(20),
+  smallTents: z.number().int().min(0).max(20),
+  mediumTents: z.number().int().min(0).max(20),
+  largeTents: z.number().int().min(0).max(20),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -25,31 +26,24 @@ export const Step2BuyAddonsPage = () => {
   const navigate = useNavigate();
 
   // TODO save the addons the user chooses
-  const {
-    setGreenCamping,
-    setTotalChairs,
-    setTotalPavillons,
-    setTotalSmallTents,
-    setTotalMediumTents,
-    setTotalLargeTents,
-  } = useBookingStore();
+  const { addons, setAddons } = useBookingStore();
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      chair_amount: 0,
-      pavillon_amount: 0,
-      small_tent_amount: 0,
-      medium_tent_amount: 0,
-      large_tent_amount: 0,
+      greenCamping: false,
+      chairs: 0,
+      pavillons: 0,
+      smallTents: 0,
+      mediumTents: 0,
+      largeTents: 0,
     },
   });
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit = (values: FormData) => {
     console.log("values: ", values);
 
-    setTotalChairs(formObject.getValues().ticket_amount);
-    setTotalVipTickets(formObject.getValues().vip_ticket_amount);
+    setAddons(values);
 
     navigate(`${ERoutes.BUY_TICKET}/3`);
   };
@@ -62,26 +56,34 @@ export const Step2BuyAddonsPage = () => {
           <span className="~text-base/lg -mt-2">(Optional)</span>
         </h1>
 
-        <div className="mb-10 flex justify-between items-center gap-3">
-          <div className="flex flex-col leading-none">
-            <label
-              htmlFor="terms1"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Green camping
-            </label>
-            <p className="mb-1 text-sm text-muted-foreground">Modtag kun genanvendeligt og miljøbevist festival gear</p>
-            <p className="text-sm text-muted-foreground">249 KR</p>
-          </div>
+        <FormField
+          control={formObject.control}
+          name="greenCamping"
+          render={({ field }) => (
+            <FormItem className="mb-10 flex justify-between items-center gap-3">
+              <div className="flex flex-col leading-none">
+                <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Green camping
+                </FormLabel>
+                <FormDescription className="mb-1 text-sm text-muted-foreground">
+                  Modtag kun genanvendeligt og miljøbevist festival gear
+                </FormDescription>
+                <FormDescription className="text-sm text-muted-foreground">249 KR</FormDescription>
+              </div>
 
-          <Checkbox id="terms1" />
-        </div>
+              <FormControl>
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <h2 className="mb-8">Camping Gear</h2>
 
         <FormField
           control={formObject.control}
-          name="chair_amount"
+          name="chairs"
           render={({ field }) => (
             <FormItem className="mb-6 flex flex-row items-center">
               <div className="flex flex-col gap-1 flex-1">
@@ -98,7 +100,7 @@ export const Step2BuyAddonsPage = () => {
 
         <FormField
           control={formObject.control}
-          name="pavillon_amount"
+          name="pavillons"
           render={({ field }) => (
             <FormItem className="mb-6 flex flex-row items-center">
               <div className="flex flex-col gap-1 flex-1">
@@ -115,7 +117,7 @@ export const Step2BuyAddonsPage = () => {
 
         <FormField
           control={formObject.control}
-          name="small_tent_amount"
+          name="smallTents"
           render={({ field }) => (
             <FormItem className="mb-6 flex flex-row items-center">
               <div className="flex flex-col gap-1 flex-1">
@@ -132,7 +134,7 @@ export const Step2BuyAddonsPage = () => {
 
         <FormField
           control={formObject.control}
-          name="medium_tent_amount"
+          name="mediumTents"
           render={({ field }) => (
             <FormItem className="mb-6 flex flex-row items-center">
               <div className="flex flex-col gap-1 flex-1">
@@ -149,7 +151,7 @@ export const Step2BuyAddonsPage = () => {
 
         <FormField
           control={formObject.control}
-          name="large_tent_amount"
+          name="largeTents"
           render={({ field }) => (
             <FormItem className="mb-6 flex flex-row items-center">
               <div className="flex flex-col gap-1 flex-1">
