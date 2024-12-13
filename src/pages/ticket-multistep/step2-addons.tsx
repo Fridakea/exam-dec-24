@@ -26,7 +26,7 @@ export const Step2BuyAddonsPage = () => {
   const navigate = useNavigate();
 
   // TODO save the addons the user chooses
-  const { addons, setAddons } = useBookingStore();
+  const { setAddons } = useBookingStore();
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),

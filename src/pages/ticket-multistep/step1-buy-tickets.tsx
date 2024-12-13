@@ -24,7 +24,7 @@ type FormData = z.infer<typeof formSchema>;
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
 
-  const { setTotalTickets, setTotalVipTickets } = useBookingStore();
+  const { setTotalTickets, setTotalVipTickets, setArea } = useBookingStore();
 
   // const { error, isPending, data } = useFetch(`${apiBaseUrl}/bands`);*
 
@@ -33,7 +33,7 @@ export const Step1BuyTicketsPage = () => {
     defaultValues: {
       ticket_amount: 0,
       vip_ticket_amount: 0,
-      area: undefined,
+      area: "",
     },
     mode: "onSubmit",
   });
@@ -46,6 +46,7 @@ export const Step1BuyTicketsPage = () => {
 
     setTotalTickets(formObject.getValues().ticket_amount);
     setTotalVipTickets(formObject.getValues().vip_ticket_amount);
+    setArea(formObject.getValues().area);
 
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };

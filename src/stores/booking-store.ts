@@ -12,8 +12,10 @@ type BookingAddons = {
 type BookingState = {
   totalTickets: number;
   totalVipTickets: number;
+  area: string;
   setTotalTickets: (newAmount: number) => void;
   setTotalVipTickets: (newAmount: number) => void;
+  setArea: (newValue: string) => void;
 
   addons: BookingAddons;
   setAddons: (newAddons: BookingAddons) => void;
@@ -23,8 +25,10 @@ export const useBookingStore = create<BookingState>((set) => ({
   // Tickets
   totalTickets: 2,
   totalVipTickets: 1,
+  area: "Nilfheim",
   setTotalTickets: (newAmount) => set((state) => ({ ...state, totalTickets: newAmount })),
   setTotalVipTickets: (newAmount) => set((state) => ({ ...state, totalVipTickets: newAmount })),
+  setArea: (newValue) => set(() => ({ area: newValue })),
 
   addons: {
     greenCamping: false,
