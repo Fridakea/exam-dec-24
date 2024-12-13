@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { ERoutes } from "@/main.tsx";
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 
 export const Layout = () => {
@@ -15,8 +15,8 @@ export const Layout = () => {
             <SheetTrigger>Open</SheetTrigger>
 
             <SheetContent>
-              <DialogTitle>Menu</DialogTitle>
-              <DialogDescription>Menu</DialogDescription>
+              <DialogTitle hidden>Menu</DialogTitle>
+              <DialogDescription hidden>Her vises menu underpunkterne</DialogDescription>
               <nav className="flex flex-col gap-10">
                 <Link to={ERoutes.HOME} onClick={() => setIsMenuOpen(false)}>
                   Home

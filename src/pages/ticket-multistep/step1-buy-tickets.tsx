@@ -11,6 +11,7 @@ import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
 import { mockApiAreas } from "@/mockdata";
 import { useBookingStore } from "@/stores/booking-store";
+import { Basket } from "@/components/Basket";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
@@ -50,97 +51,103 @@ export const Step1BuyTicketsPage = () => {
   };
 
   return (
-    <Form {...formObject}>
-      <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
-        <h1 className="mb-8">Køb biletter</h1>
+    <section className="flex flex-col sm:flex-row gap-10">
+      <Form {...formObject}>
+        <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
+          <h1 className="mb-8">Køb biletter</h1>
 
-        <FormField
-          control={formObject.control}
-          name="ticket_amount"
-          render={({ field }) => (
-            <FormItem className="mb-6 flex flex-row items-center">
-              <div className="flex flex-col gap-1 flex-1">
-                <FormLabel>Partout billet</FormLabel>
-                <FormDescription>799 KR</FormDescription>
-              </div>
-              <FormControl>
-                <PlusMinusInput field={field} max={20} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={formObject.control}
+            name="ticket_amount"
+            render={({ field }) => (
+              <FormItem className="mb-6 flex flex-row items-center">
+                <div className="flex flex-col gap-1 flex-1">
+                  <FormLabel>Partout billet</FormLabel>
+                  <FormDescription>799 KR</FormDescription>
+                </div>
+                <FormControl>
+                  <PlusMinusInput field={field} max={20} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={formObject.control}
-          name="vip_ticket_amount"
-          render={({ field }) => (
-            <FormItem className="mb-6 flex flex-row items-center">
-              <div className="flex flex-col gap-1 flex-1">
-                <FormLabel>VIP Partout billet</FormLabel>
-                <FormDescription>1299 KR</FormDescription>
-              </div>
-              <FormControl>
-                <PlusMinusInput field={field} max={20} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={formObject.control}
+            name="vip_ticket_amount"
+            render={({ field }) => (
+              <FormItem className="mb-6 flex flex-row items-center">
+                <div className="flex flex-col gap-1 flex-1">
+                  <FormLabel>VIP Partout billet</FormLabel>
+                  <FormDescription>1299 KR</FormDescription>
+                </div>
+                <FormControl>
+                  <PlusMinusInput field={field} max={20} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <h1 className="mt-10 mb-8">Tilkøb</h1>
+          <h1 className="mt-10 mb-8">Tilkøb</h1>
 
-        <FormField
-          name="area"
-          render={() => (
-            <FormItem className="mb-12">
-              <div className="mb-4 *:mb-2">
-                <FormLabel className="flex items-start gap-1">
-                  Vælg camping område
-                  <span className="~text-2xs/xs -mt-1">*</span>
-                </FormLabel>
-                <FormDescription>Reservationsgebyr på 99 kr</FormDescription>
-              </div>
+          <FormField
+            name="area"
+            render={() => (
+              <FormItem className="mb-12">
+                <div className="mb-4 *:mb-2">
+                  <FormLabel className="flex items-start gap-1">
+                    Vælg camping område
+                    <span className="~text-2xs/xs -mt-1">*</span>
+                  </FormLabel>
+                  <FormDescription>Reservationsgebyr på 99 kr</FormDescription>
+                </div>
 
-              <div className="flex flex-row flex-wrap gap-4">
-                {mockApiAreas.map((areaObj) => (
-                  <FormField
-                    key={areaObj.area}
-                    control={formObject.control}
-                    name="area"
-                    render={({ field }) => (
-                      <FormItem key={areaObj.area}>
-                        <FormControl>
-                          <RadioCard
-                            id={areaObj.area}
-                            value={areaObj.area}
-                            name="area-radio-group"
-                            header={areaObj.area}
-                            subHeader={`${areaObj.available} ledige pladser`}
-                            isChecked={field.value === areaObj.area}
-                            onChange={(newValue) => field.onChange(newValue)}
-                          />
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                ))}
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <div className="flex flex-row flex-wrap gap-4">
+                  {mockApiAreas.map((areaObj) => (
+                    <FormField
+                      key={areaObj.area}
+                      control={formObject.control}
+                      name="area"
+                      render={({ field }) => (
+                        <FormItem key={areaObj.area}>
+                          <FormControl>
+                            <RadioCard
+                              id={areaObj.area}
+                              value={areaObj.area}
+                              name="area-radio-group"
+                              header={areaObj.area}
+                              subHeader={`${areaObj.available} ledige pladser`}
+                              isChecked={field.value === areaObj.area}
+                              onChange={(newValue) => field.onChange(newValue)}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button
-          variant="accent"
-          className="self-end"
-          disabled={!formObject.formState.isValid || !hasAtleast1Ticket}
-          type="submit"
-        >
-          Næste
-        </Button>
-      </form>
-    </Form>
+          <Button
+            variant="accent"
+            className="self-end"
+            disabled={!formObject.formState.isValid || !hasAtleast1Ticket}
+            type="submit"
+          >
+            Næste
+          </Button>
+        </form>
+      </Form>
+
+      <div className="sm:w-3/4 lg:w-1/2">
+        <Basket />
+      </div>
+    </section>
   );
 };
 

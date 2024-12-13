@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import useFetch from "@/hooks/useFetch";
+import useFetch from "@/hooks/use-fetch";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";

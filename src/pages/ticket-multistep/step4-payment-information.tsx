@@ -47,7 +47,7 @@ export const Step4PaymentInformationPage = () => {
       <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
         <h1 className="mb-8 ~text-3xl/4xl">Betalingsoplysninger</h1>
 
-        <div className="flex flex-col payment-flex-row gap-3">
+        <section className="flex flex-col payment-flex-row gap-3">
           <div className="flex flex-col gap-2 flex-grow">
             <FormField
               control={formObject.control}
@@ -126,7 +126,7 @@ export const Step4PaymentInformationPage = () => {
               )}
             />
           </div>
-        </div>
+        </section>
 
         <div className="mb-10 flex gap-2 items-center">
           <Checkbox id="terms" required={true} />

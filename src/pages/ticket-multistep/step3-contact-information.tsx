@@ -69,7 +69,7 @@ export const Step3ContactInformationPage = () => {
       <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
         <h1 className="mb-8">Kontaktoplysninger</h1>
 
-        <div className="*:mb-2">
+        <section className="*:mb-2">
           <FormField
             control={formObject.control}
             name="contact_info"
@@ -85,7 +85,8 @@ export const Step3ContactInformationPage = () => {
                         <FormControl>
                           <fieldset>
                             <legend className="mb-4 ~text-lg/xl uppercase flex items-center gap-2">
-                              <span className="text-accent font-semibold ~text-3xl/4xl">VIP</span> partout billet
+                              <span className="text-accent font-semibold ~text-3xl/4xl">VIP</span> partout billet{" "}
+                              {ticket}
                             </legend>
                             <div className="flex flex-col sm:flex-row gap-3 *:flex-1">
                               <div>
@@ -160,7 +161,7 @@ export const Step3ContactInformationPage = () => {
                       <FormItem className="p-4 border border-muted-foreground rounded-md mb-8 shadow-md">
                         <FormControl>
                           <fieldset>
-                            <legend className="mb-4 ~text-lg/xl uppercase">Partout billet</legend>
+                            <legend className="mb-4 ~text-lg/xl uppercase">Partout billet {ticket}</legend>
                             <div className="flex flex-col sm:flex-row gap-3 *:flex-1">
                               <div>
                                 <Label>Fornavn</Label>
@@ -227,7 +228,7 @@ export const Step3ContactInformationPage = () => {
               </FormItem>
             )}
           />
-        </div>
+        </section>
 
         <div className="mb-10 flex gap-3 items-center">
           <Checkbox id="newsletter" />
