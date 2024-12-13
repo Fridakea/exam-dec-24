@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, ReactElement, useState } from "react";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useBookingStore } from "@/stores/booking-store";
 
@@ -15,9 +15,10 @@ import {
 } from "@/components/ui/drawer";
 import { TicketIcon } from "@/assets/icons";
 import { DottedLine } from "./DottedLine";
+import { twMerge } from "tailwind-merge";
 
 export function Basket() {
-  const { totalTickets, totalVipTickets, area } = useBookingStore();
+  const { totalTickets, totalVipTickets, area, addons } = useBookingStore();
 
   // Calculate total sum and formating as DKK link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
   const calcSum = totalVipTickets * 1299 + totalTickets * 799;
@@ -75,46 +76,74 @@ export function Basket() {
           </DrawerHeader>
 
           <section>
+            {totalVipTickets <= 0 && totalTickets <= 0 && area.length <= 0 && (
+              <div>
+                <p>Ingenting i kurven</p>
+              </div>
+            )}
+
             {totalVipTickets > 0 && (
-              <>
-                <div className="py-5 px-[10%] flex justify-between items-center relative uppercase">
-                  <TicketIcon className="w-full h-full object-contain absolute top-0 left-0 -z-10" />
-                  <div>
-                    <h2 className="flex items-center gap-2">
-                      <span className="text-accent font-bold text-xl">VIP</span> Partout Billet
-                    </h2>
-                    <p className="text-sm text-muted-foreground">799 kr</p>
-                  </div>
-                  <p>x {totalVipTickets}</p>
-                </div>
-                <DottedLine />
-              </>
+              <TicketItem price={1299} amount={totalVipTickets}>
+                <h2 className="flex items-center gap-2">
+                  <span className="text-accent font-bold text-xl">VIP</span> Partout Billet
+                </h2>
+              </TicketItem>
             )}
 
             {totalTickets > 0 && (
-              <>
-                <div className="py-5 px-[10%] flex justify-between items-center relative uppercase">
-                  <TicketIcon className="w-full h-full object-contain absolute top-0 left-0 -z-10" />
-                  <div>
-                    <h2>Partout Billet</h2>
-                    <p className="text-sm text-muted-foreground">799 kr</p>
-                  </div>
-                  <p>x {totalTickets}</p>
-                </div>
-                <DottedLine />
-              </>
+              <TicketItem price={799} amount={totalTickets}>
+                <h2 className="flex items-center gap-2">Partout Billet</h2>
+              </TicketItem>
             )}
 
             {area.length > 0 && (
-              <>
-                <div className="py-5 px-[10%] items-center relative uppercase">
-                  <TicketIcon className="w-full h-full object-contain absolute top-0 left-0 -z-10" />
-                  <h2>Camping Reservation</h2>
+              <TicketItem price={799}>
+                <>
+                  <h2 className="flex items-center gap-2">Camping Reservation</h2>
                   <p className="text-base text-accent">{area}</p>
-                  <p className="text-sm text-muted-foreground">799 kr</p>
-                </div>
-                <DottedLine />
-              </>
+                </>
+              </TicketItem>
+            )}
+
+            {addons.greenCamping && (
+              <TicketItem price={249} className="bg-green">
+                <>
+                  <h2 className="flex items-center gap-2">Green Camping</h2>
+                  <p className="text-sm text-muted-foreground">
+                    Modtag kun genanvendeligt og miljøbevist festival gear
+                  </p>
+                </>
+              </TicketItem>
+            )}
+
+            {addons.chairs > 0 && (
+              <TicketItem price={79} amount={addons.chairs}>
+                <h2 className="flex items-center gap-2">Festivalstol m. kopholder</h2>
+              </TicketItem>
+            )}
+
+            {addons.pavillons > 0 && (
+              <TicketItem price={149} amount={addons.pavillons}>
+                <h2 className="flex items-center gap-2">Festival pavillon</h2>
+              </TicketItem>
+            )}
+
+            {addons.smallTents > 0 && (
+              <TicketItem price={199} amount={addons.smallTents}>
+                <h2 className="flex items-center gap-2">1 personers telt</h2>
+              </TicketItem>
+            )}
+
+            {addons.mediumTents > 0 && (
+              <TicketItem price={299} amount={addons.mediumTents}>
+                <h2 className="flex items-center gap-2">2 personers telt</h2>
+              </TicketItem>
+            )}
+
+            {addons.largeTents > 0 && (
+              <TicketItem price={399} amount={addons.largeTents}>
+                <h2 className="flex items-center gap-2">3 personers telt</h2>
+              </TicketItem>
             )}
           </section>
         </div>
@@ -129,3 +158,24 @@ export function Basket() {
     </Drawer>
   );
 }
+
+type TicketItemProps = {
+  price: number;
+  amount?: number;
+  className?: string;
+  children?: ReactElement;
+};
+
+const TicketItem: FC<TicketItemProps> = ({ price, amount = 0, className = "", children }) => (
+  <>
+    <div className={twMerge(className, "py-5 px-[10%] flex justify-between items-center relative uppercase")}>
+      <TicketIcon className="w-full h-full object-contain absolute top-0 left-0 -z-10" />
+      <div>
+        {children}
+        <p className="text-sm text-muted-foreground">{price} kr</p>
+      </div>
+      {amount > 0 && <p>x {amount}</p>}
+    </div>
+    <DottedLine />
+  </>
+);

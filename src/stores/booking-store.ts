@@ -31,7 +31,7 @@ export const useBookingStore = create<BookingState>((set) => ({
   setArea: (newValue) => set(() => ({ area: newValue })),
 
   addons: {
-    greenCamping: false,
+    greenCamping: true,
     chairs: 0,
     pavillons: 0,
     smallTents: 0,
