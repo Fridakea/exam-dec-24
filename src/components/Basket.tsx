@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from "react";
+import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-is-mobile";
 import { useBookingStore } from "@/stores/booking-store";
 
@@ -13,15 +13,24 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { TicketIcon } from "@/assets/icons";
-import { DottedLine } from "./DottedLine";
-import { twMerge } from "tailwind-merge";
+import { BasketSection } from "./BasketSection";
 
 export function Basket() {
-  const { totalTickets, totalVipTickets, area, addons } = useBookingStore();
+  const { totalTickets, totalVipTickets, addons } = useBookingStore();
+  const { greenCamping, chairs, pavillons, smallTents, mediumTents, largeTents } = addons;
 
   // Calculate total sum and formating as DKK link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
-  const calcSum = totalVipTickets * 1299 + totalTickets * 799;
+  const calcSum = greenCamping
+    ? 249
+    : 0 +
+      totalVipTickets * 1299 +
+      totalTickets * 799 +
+      99 +
+      chairs * 79 +
+      pavillons * 149 +
+      smallTents * 199 +
+      mediumTents * 299 +
+      largeTents * 399;
   const moneyFormatter = new Intl.NumberFormat("da-DK", {
     style: "currency",
     currency: "DKK",
@@ -34,9 +43,11 @@ export function Basket() {
 
   if (!isMobile) {
     return (
-      <section className="w-full h-full p-10 bg-secondary rounded-2xl text-secondary-foreground flex flex-col justify-between">
+      <section className="relative w-full h-full py-8 px-5 md:p-8 bg-secondary rounded-2xl text-secondary-foreground flex flex-col justify-between -z-10">
         <div>
-          <h2 className="~text-2xl/3xl">Min kurv på PC</h2>
+          <h2 className="~text-2xl/3xl mb-5 md:mb-7">Min kurv</h2>
+
+          <BasketSection />
         </div>
 
         <div className="flex justify-between">
@@ -59,11 +70,11 @@ export function Basket() {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="p-4 h-screen rounded-none flex flex-col justify-between">
-        <div>
+        <div className="overflow-y-scroll py-2">
           <DrawerClose asChild>
             <Button
               variant="outline"
-              className="w-full h-fit p-4 absolute top-0 left-0 rounded-none flex justify-between"
+              className="w-full h-fit p-4 absolute top-0 left-0 rounded-none flex justify-between z-10"
             >
               <p>Pil ned</p>
               <p>Luk</p>
@@ -75,77 +86,7 @@ export function Basket() {
             <DrawerDescription hidden>Her vises de ting du har produkter til kurven</DrawerDescription>
           </DrawerHeader>
 
-          <section>
-            {totalVipTickets <= 0 && totalTickets <= 0 && area.length <= 0 && (
-              <div>
-                <p>Ingenting i kurven</p>
-              </div>
-            )}
-
-            {totalVipTickets > 0 && (
-              <TicketItem price={1299} amount={totalVipTickets}>
-                <h2 className="flex items-center gap-2">
-                  <span className="text-accent font-bold text-xl">VIP</span> Partout Billet
-                </h2>
-              </TicketItem>
-            )}
-
-            {totalTickets > 0 && (
-              <TicketItem price={799} amount={totalTickets}>
-                <h2 className="flex items-center gap-2">Partout Billet</h2>
-              </TicketItem>
-            )}
-
-            {area.length > 0 && (
-              <TicketItem price={799}>
-                <>
-                  <h2 className="flex items-center gap-2">Camping Reservation</h2>
-                  <p className="text-base text-accent">{area}</p>
-                </>
-              </TicketItem>
-            )}
-
-            {addons.greenCamping && (
-              <TicketItem price={249} className="bg-green">
-                <>
-                  <h2 className="flex items-center gap-2">Green Camping</h2>
-                  <p className="text-sm text-muted-foreground">
-                    Modtag kun genanvendeligt og miljøbevist festival gear
-                  </p>
-                </>
-              </TicketItem>
-            )}
-
-            {addons.chairs > 0 && (
-              <TicketItem price={79} amount={addons.chairs}>
-                <h2 className="flex items-center gap-2">Festivalstol m. kopholder</h2>
-              </TicketItem>
-            )}
-
-            {addons.pavillons > 0 && (
-              <TicketItem price={149} amount={addons.pavillons}>
-                <h2 className="flex items-center gap-2">Festival pavillon</h2>
-              </TicketItem>
-            )}
-
-            {addons.smallTents > 0 && (
-              <TicketItem price={199} amount={addons.smallTents}>
-                <h2 className="flex items-center gap-2">1 personers telt</h2>
-              </TicketItem>
-            )}
-
-            {addons.mediumTents > 0 && (
-              <TicketItem price={299} amount={addons.mediumTents}>
-                <h2 className="flex items-center gap-2">2 personers telt</h2>
-              </TicketItem>
-            )}
-
-            {addons.largeTents > 0 && (
-              <TicketItem price={399} amount={addons.largeTents}>
-                <h2 className="flex items-center gap-2">3 personers telt</h2>
-              </TicketItem>
-            )}
-          </section>
+          <BasketSection />
         </div>
 
         <DrawerFooter>
@@ -158,24 +99,3 @@ export function Basket() {
     </Drawer>
   );
 }
-
-type TicketItemProps = {
-  price: number;
-  amount?: number;
-  className?: string;
-  children?: ReactElement;
-};
-
-const TicketItem: FC<TicketItemProps> = ({ price, amount = 0, className = "", children }) => (
-  <>
-    <div className={twMerge(className, "py-5 px-[10%] flex justify-between items-center relative uppercase")}>
-      <TicketIcon className="w-full h-full object-contain absolute top-0 left-0 -z-10" />
-      <div>
-        {children}
-        <p className="text-sm text-muted-foreground">{price} kr</p>
-      </div>
-      {amount > 0 && <p>x {amount}</p>}
-    </div>
-    <DottedLine />
-  </>
-);

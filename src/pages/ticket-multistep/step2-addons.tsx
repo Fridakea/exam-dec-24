@@ -50,7 +50,7 @@ export const Step2BuyAddonsPage = () => {
   };
 
   return (
-    <section className="flex flex-col sm:flex-row gap-10">
+    <section className="flex flex-col sm:flex-row gap-10 *:flex-1">
       <Form {...formObject}>
         <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
           <h1 className="mb-8 flex items-start gap-1">
@@ -174,7 +174,7 @@ export const Step2BuyAddonsPage = () => {
         </form>
       </Form>
 
-      <div className="sm:w-3/4 lg:w-1/2">
+      <div className="max-w-[45%] lg:max-w-[40%]">
         <Basket />
       </div>
     </section>
