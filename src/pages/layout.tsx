@@ -1,36 +1,46 @@
 import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { ERoutes } from "@/main.tsx";
+
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { Menu } from "lucide-react";
+import { Logo } from "@/assets/img/logo-export";
 
 export const Layout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="p-6">
-        <div className="max-w-[1200px] mx-auto flex flex-col items-end">
-          <Sheet open={isMenuOpen} onOpenChange={(open) => setIsMenuOpen(open)}>
-            <SheetTrigger>Open</SheetTrigger>
+      <header className="pt-2 pb-4 px-4 max-w-[1200px] mx-auto flex flex-row items-center justify-between">
+        <Link to={ERoutes.HOME} onClick={() => setIsMenuOpen(false)}>
+          <div className="flex gap-2 items-center">
+            <Logo className="w-24 sm:w-32 transition-all hover:text-accent" />
+            {/* <h2 className="hidden sm:block font-nova-cut">Foo festival 2025</h2> */}
+          </div>
+        </Link>
 
-            <SheetContent>
-              <DialogTitle hidden>Menu</DialogTitle>
-              <DialogDescription hidden>Her vises menu underpunkterne</DialogDescription>
-              <nav className="flex flex-col gap-10">
-                <Link to={ERoutes.HOME} onClick={() => setIsMenuOpen(false)}>
-                  Home
-                </Link>
-                <Link to={ERoutes.SCHEDULE} onClick={() => setIsMenuOpen(false)}>
-                  Schedule
-                </Link>
-                <Link to={ERoutes.BUY_TICKET} onClick={() => setIsMenuOpen(false)}>
-                  Køb billet
-                </Link>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
+        <Sheet open={isMenuOpen} onOpenChange={(open) => setIsMenuOpen(open)}>
+          <SheetTrigger>
+            <Menu className="h-12 w-12 stroke-1 transition-all hover:text-accent" />
+          </SheetTrigger>
+
+          <SheetContent>
+            <DialogTitle hidden>Menu</DialogTitle>
+            <DialogDescription hidden>Her vises menu underpunkterne</DialogDescription>
+            <nav className="flex flex-col items-center gap-16 sm:gap-32 tracking-widest font-medium uppercase">
+              <Link to={ERoutes.HOME} onClick={() => setIsMenuOpen(false)}>
+                <Logo className="w-48 sm:w-56 pt-10 sm:pt-20 transition-all hover:text-accent" />
+              </Link>
+              <Link to={ERoutes.SCHEDULE} onClick={() => setIsMenuOpen(false)}>
+                <h2 className="transition-all hover:text-accent">Program</h2>
+              </Link>
+              <Link to={ERoutes.BUY_TICKET} onClick={() => setIsMenuOpen(false)}>
+                <h2 className="transition-all hover:text-accent">Køb billet</h2>
+              </Link>
+            </nav>
+          </SheetContent>
+        </Sheet>
       </header>
 
       <main className="max-w-[1200px] mx-auto px-6">

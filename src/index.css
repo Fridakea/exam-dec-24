@@ -82,6 +82,14 @@
     font-family: "Nova Cut";
   }
 
+  h2 {
+    @apply ~text-2xl/3xl;
+  }
+
+  h3 {
+    @apply ~text-lg/xl;
+  }
+
   p {
     @apply ~text-base/lg;
   }

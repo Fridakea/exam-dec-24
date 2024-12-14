@@ -19,22 +19,23 @@ export const BasketSection = () => {
 
       {totalVipTickets > 0 && (
         <TicketItem price={1299} amount={totalVipTickets}>
-          <h2 className="flex items-center gap-2">
-            <span className="text-accent font-bold text-xl">VIP</span> Partout Billet
-          </h2>
+          <div className="flex gap-2">
+            <h2 className="text-accent font-bold">VIP</h2>
+            <h3 className="flex items-center gap-2">Partout Billet</h3>
+          </div>
         </TicketItem>
       )}
 
       {totalTickets > 0 && (
         <TicketItem price={799} amount={totalTickets}>
-          <h2 className="flex items-center gap-2">Partout Billet</h2>
+          <h3 className="flex items-center gap-2">Partout Billet</h3>
         </TicketItem>
       )}
 
       {area.length > 0 && (
         <TicketItem price={799}>
           <>
-            <h2 className="flex items-center gap-2">Camping Reservation</h2>
+            <h3 className="flex items-center gap-2">Camping Reservation</h3>
             <p className="text-base text-accent">{area}</p>
           </>
         </TicketItem>
@@ -43,7 +44,7 @@ export const BasketSection = () => {
       {greenCamping && (
         <TicketItem price={249} ticketClass="text-green" green="bg-green">
           <>
-            <h2 className="flex items-center gap-2">Green Camping</h2>
+            <h3 className="flex items-center gap-2">Green Camping</h3>
           </>
         </TicketItem>
       )}
@@ -55,7 +56,7 @@ export const BasketSection = () => {
           ticketClass={greenCamping ? "text-green" : ""}
           green={greenCamping ? "bg-green" : ""}
         >
-          <h2 className="flex items-center gap-2">Festivalstol m. kopholder</h2>
+          <h3 className="flex items-center gap-2">Festivalstol m. kopholder</h3>
         </TicketItem>
       )}
 
@@ -66,7 +67,7 @@ export const BasketSection = () => {
           ticketClass={greenCamping ? "text-green" : ""}
           green={greenCamping ? "bg-green" : ""}
         >
-          <h2 className="flex items-center gap-2">Festival pavillon</h2>
+          <h3 className="flex items-center gap-2">Festival pavillon</h3>
         </TicketItem>
       )}
 
@@ -77,7 +78,7 @@ export const BasketSection = () => {
           ticketClass={greenCamping ? "text-green" : ""}
           green={greenCamping ? "bg-green" : ""}
         >
-          <h2 className="flex items-center gap-2">1 personers telt</h2>
+          <h3 className="flex items-center gap-2">1 personers telt</h3>
         </TicketItem>
       )}
 
@@ -88,7 +89,7 @@ export const BasketSection = () => {
           ticketClass={greenCamping ? "text-green" : ""}
           green={greenCamping ? "bg-green" : ""}
         >
-          <h2 className="flex items-center gap-2">2 personers telt</h2>
+          <h3 className="flex items-center gap-2">2 personers telt</h3>
         </TicketItem>
       )}
 
@@ -99,7 +100,7 @@ export const BasketSection = () => {
           ticketClass={greenCamping ? "text-green" : ""}
           green={greenCamping ? "bg-green" : ""}
         >
-          <h2 className="flex items-center gap-2">3 personers telt</h2>
+          <h3 className="flex items-center gap-2">3 personers telt</h3>
         </TicketItem>
       )}
     </section>

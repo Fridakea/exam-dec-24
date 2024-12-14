@@ -152,14 +152,3 @@ export const Step1BuyTicketsPage = () => {
     </section>
   );
 };
-
-{
-  /* <Button
-size="icon"
-type="button"
-className="h-8 w-8 shrink-0 rounded-full"
->
-<Plus />
-<span className="sr-only">Increase</span>
-</Button> */
-}

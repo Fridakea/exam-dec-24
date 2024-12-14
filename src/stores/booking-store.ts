@@ -33,28 +33,28 @@ type BookingState = {
 
 export const useBookingStore = create<BookingState>((set) => ({
   // Tickets
-  totalTickets: 2,
-  totalVipTickets: 2,
-  area: "Nilfheim",
+  totalTickets: 0,
+  totalVipTickets: 0,
+  area: "",
   setTotalTickets: (newAmount) => set((state) => ({ ...state, totalTickets: newAmount })),
   setTotalVipTickets: (newAmount) => set((state) => ({ ...state, totalVipTickets: newAmount })),
   setArea: (newValue) => set(() => ({ area: newValue })),
 
   addons: {
     greenCamping: false,
-    chairs: 2,
-    pavillons: 2,
+    chairs: 0,
+    pavillons: 0,
     smallTents: 0,
-    mediumTents: 2,
+    mediumTents: 0,
     largeTents: 0,
   },
   setAddons: (newAddons) => set((state) => ({ ...state, addons: newAddons })),
 
   paymentInfo: {
-    cardholder_name: "Navn på kort",
-    card_number: 1245123412451236,
-    expiration: "12/25",
-    cvc: 133,
+    cardholder_name: "",
+    card_number: undefined,
+    expiration: "",
+    cvc: undefined,
   },
   setPaymentInfo: (newValue) => set((state) => ({ ...state, paymentInfo: newValue })),
 }));

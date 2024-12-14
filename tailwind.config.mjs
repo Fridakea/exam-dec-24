@@ -12,6 +12,9 @@ export default {
   theme: {
     screens,
     fontSize,
+    fontFamily: {
+      "nova-cut": ["Nova Cut"],
+    },
     extend: {
       borderRadius: {
         lg: "var(--radius)",
