@@ -10,12 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
 import { Basket } from "@/components/Basket";
+import { useBookingStore } from "@/stores/booking-store";
 
 const formSchema = z.object({
   cardholder_name: z.string().min(2, "Navnet skal være mindst 2 bogstaver"),
   card_number: z.number().int().min(16, "Kortnummeret er minimum 16 cifre"),
-  expiration: z.number().int().min(4, "Udløbsdatoen er minimum 4 cifre"),
-  cvc: z.number().int().min(3, "CVC skal være 3 tegn").max(3, "CVC skal være 3 tegn"),
+  expiration: z.string().min(4, "Udløbsdatoen er minimum 4 cifre"),
+  cvc: z.number().int().min(2, "min"),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -25,12 +26,14 @@ const dateRegex = "^(0[1-9]?|1[0-2]?)?\\d{0,2}$";
 export const Step4PaymentInformationPage = () => {
   const navigate = useNavigate();
 
+  const { setPaymentInfo } = useBookingStore();
+
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      cardholder_name: undefined,
+      cardholder_name: "",
       card_number: undefined,
-      expiration: undefined,
+      expiration: "",
       cvc: undefined,
     },
     mode: "onTouched",
@@ -38,6 +41,9 @@ export const Step4PaymentInformationPage = () => {
 
   const handleSubmit = (values: FormData) => {
     console.log(values);
+
+    setPaymentInfo(values);
+
     navigate(`${ERoutes.BUY_TICKET}/5`);
   };
 
@@ -88,19 +94,17 @@ export const Step4PaymentInformationPage = () => {
                       Udløbsdato <span className="text-muted-foreground text-xs">(MM/ÅÅ)</span>
                     </FormLabel>
                     <FormControl>
-                      <InputOTP maxLength={4} pattern={dateRegex}>
+                      <InputOTP maxLength={4} pattern={dateRegex} {...field}>
                         <InputOTPGroup>
-                          <InputOTPSlot index={0} {...field} />
-                          <InputOTPSlot index={1} {...field} />
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
                         </InputOTPGroup>
                         <InputOTPSeparator />
                         <InputOTPGroup>
-                          <InputOTPSlot index={2} {...field} />
-                          <InputOTPSlot index={3} {...field} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
                         </InputOTPGroup>
                       </InputOTP>
-
-                      {/* <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -142,7 +146,13 @@ export const Step4PaymentInformationPage = () => {
             </div>
           </div>
 
-          <Button disabled={!formObject.formState.isValid} variant="accent" className="self-end" type="submit">
+          <Button
+            size="lg"
+            disabled={!formObject.formState.isValid}
+            variant="accent"
+            className="self-end"
+            type="submit"
+          >
             Se overblik
           </Button>
         </form>

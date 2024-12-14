@@ -135,6 +135,7 @@ export const Step1BuyTicketsPage = () => {
           />
 
           <Button
+            size="lg"
             variant="accent"
             className="self-end"
             disabled={!formObject.formState.isValid || !hasAtleast1Ticket}

@@ -245,7 +245,13 @@ export const Step3ContactInformationPage = () => {
             </div>
           </div>
 
-          <Button disabled={!formObject.formState.isValid} variant="accent" className="self-end" type="submit">
+          <Button
+            size="lg"
+            disabled={!formObject.formState.isValid}
+            variant="accent"
+            className="self-end"
+            type="submit"
+          >
             Til betaling
           </Button>
         </form>

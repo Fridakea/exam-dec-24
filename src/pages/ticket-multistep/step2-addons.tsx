@@ -168,7 +168,7 @@ export const Step2BuyAddonsPage = () => {
             )}
           />
 
-          <Button variant="accent" className="self-end" type="submit">
+          <Button size="lg" variant="accent" className="self-end" type="submit">
             Næste
           </Button>
         </form>

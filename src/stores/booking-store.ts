@@ -9,6 +9,13 @@ type BookingAddons = {
   largeTents: number;
 };
 
+type PaymentInfo = {
+  cardholder_name: string;
+  card_number: any;
+  expiration: string;
+  cvc: any;
+};
+
 type BookingState = {
   totalTickets: number;
   totalVipTickets: number;
@@ -19,26 +26,37 @@ type BookingState = {
 
   addons: BookingAddons;
   setAddons: (newAddons: BookingAddons) => void;
+
+  paymentInfo: PaymentInfo;
+  setPaymentInfo: (newValue: PaymentInfo) => void;
 };
 
 export const useBookingStore = create<BookingState>((set) => ({
   // Tickets
-  totalTickets: 0,
-  totalVipTickets: 0,
-  area: "",
+  totalTickets: 2,
+  totalVipTickets: 2,
+  area: "Nilfheim",
   setTotalTickets: (newAmount) => set((state) => ({ ...state, totalTickets: newAmount })),
   setTotalVipTickets: (newAmount) => set((state) => ({ ...state, totalVipTickets: newAmount })),
   setArea: (newValue) => set(() => ({ area: newValue })),
 
   addons: {
     greenCamping: false,
-    chairs: 0,
-    pavillons: 0,
+    chairs: 2,
+    pavillons: 2,
     smallTents: 0,
-    mediumTents: 0,
+    mediumTents: 2,
     largeTents: 0,
   },
   setAddons: (newAddons) => set((state) => ({ ...state, addons: newAddons })),
+
+  paymentInfo: {
+    cardholder_name: "Navn på kort",
+    card_number: 1245123412451236,
+    expiration: "12/25",
+    cvc: 133,
+  },
+  setPaymentInfo: (newValue) => set((state) => ({ ...state, paymentInfo: newValue })),
 }));
 
 // Calculate total sum and formating as DKK link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
