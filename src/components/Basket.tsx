@@ -31,14 +31,12 @@ export function Basket() {
 
   if (!isMobile) {
     return (
-      <section className="relative w-full h-full py-8 px-5 md:p-8 bg-secondary rounded-2xl text-secondary-foreground flex flex-col justify-between -z-10">
-        <div>
-          <h2 className="~text-2xl/3xl mb-5 md:mb-7">Min kurv</h2>
-
+      <section className="relative w-full py-8 px-5 md:p-8 bg-secondary rounded-2xl text-secondary-foreground flex flex-col justify-between">
+        <h2 className="~text-2xl/3xl mb-5">Min kurv</h2>
+        <div className="overflow-y-auto">
           <BasketSection />
         </div>
-
-        <div className="flex justify-between">
+        <div className="mt-5 flex justify-between">
           <h3>I alt</h3>
           <p>{totalSum}</p>
         </div>

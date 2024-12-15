@@ -10,7 +10,7 @@ export const BasketSection = () => {
   const { greenCamping, chairs, pavillons, smallTents, mediumTents, largeTents } = addons;
 
   return (
-    <section>
+    <section className="sm:h-[50vh]">
       {totalVipTickets <= 0 && totalTickets <= 0 && area.length <= 0 && (
         <div>
           <p>Kurven er tom</p>
@@ -117,13 +117,15 @@ type TicketItemProps = {
 
 const TicketItem: FC<TicketItemProps> = ({ price, amount = 0, green = "", ticketClass = "", children }) => (
   <>
-    <div className="py-5 px-[10%] flex justify-between items-center relative uppercase">
-      <TicketIcon className={twMerge(ticketClass, "w-full h-full object-contain absolute top-0 left-0 -z-10")} />
-      <div>
-        {children}
-        <p className="text-sm text-muted-foreground">{price} kr</p>
+    <div className="py-5 px-[10%] relative uppercase">
+      <TicketIcon className={twMerge(ticketClass, "w-full h-full object-contain absolute top-0 left-0 z-0")} />
+      <div className="flex justify-between items-center relative z-10">
+        <div>
+          {children}
+          <p className="text-sm text-muted-foreground">{price} kr</p>
+        </div>
+        {amount > 0 && <p>x {amount}</p>}
       </div>
-      {amount > 0 && <p>x {amount}</p>}
     </div>
     <DottedLine className={green} />
   </>

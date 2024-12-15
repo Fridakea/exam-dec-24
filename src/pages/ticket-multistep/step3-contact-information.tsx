@@ -232,19 +232,6 @@ export const Step3ContactInformationPage = () => {
             />
           </section>
 
-          <div className="mb-10 flex gap-3 items-center">
-            <Checkbox id="newsletter" />
-
-            <div className="flex flex-col leading-none">
-              <label
-                htmlFor="newsletter"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Jeg ønsker at modtage nyhedsbrev fra Foo Festival
-              </label>
-            </div>
-          </div>
-
           <Button
             size="lg"
             disabled={!formObject.formState.isValid}
