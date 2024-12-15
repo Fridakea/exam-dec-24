@@ -9,9 +9,11 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
-import { mockApiAreas } from "@/mockdata";
 import { useBookingStore } from "@/stores/booking-store";
 import { Basket } from "@/components/Basket";
+import useFetch from "@/hooks/use-fetch";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
@@ -24,9 +26,10 @@ type FormData = z.infer<typeof formSchema>;
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
 
-  const { setTotalTickets, setTotalVipTickets, setArea } = useBookingStore();
+  const { totalTickets, totalVipTickets, setTotalTickets, setTotalVipTickets, setArea } = useBookingStore();
+  const totalTicketsAdded = totalTickets + totalVipTickets;
 
-  // const { error, isPending, data } = useFetch(`${apiBaseUrl}/bands`);*
+  const { error, isPending, data: dataAreas } = useFetch(`${apiBaseUrl}/available-spots`);
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -40,6 +43,16 @@ export const Step1BuyTicketsPage = () => {
 
   // True/false baseret på om der er valgt mindst 1 billet i alt.
   const hasAtleast1Ticket = formObject.getValues().ticket_amount > 0 || formObject.getValues().vip_ticket_amount > 0;
+
+  // This useEffect runs only once, when the component mounts.
+  useEffect(() => {
+    // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
+    formObject.watch(() => {
+      setTotalTickets(formObject.getValues().ticket_amount);
+      setTotalVipTickets(formObject.getValues().vip_ticket_amount);
+      setArea(formObject.getValues().area);
+    });
+  }, []);
 
   const handleSubmit = (values: FormData) => {
     console.log("values: ", values);
@@ -59,12 +72,12 @@ export const Step1BuyTicketsPage = () => {
 
           <FormField
             control={formObject.control}
-            name="ticket_amount"
+            name="vip_ticket_amount"
             render={({ field }) => (
               <FormItem className="mb-6 flex flex-row items-center">
                 <div className="flex flex-col gap-1 flex-1">
-                  <FormLabel>Partout billet</FormLabel>
-                  <FormDescription>799 KR</FormDescription>
+                  <FormLabel>VIP Partout billet</FormLabel>
+                  <FormDescription>1299 KR</FormDescription>
                 </div>
                 <FormControl>
                   <PlusMinusInput field={field} max={20} />
@@ -76,12 +89,12 @@ export const Step1BuyTicketsPage = () => {
 
           <FormField
             control={formObject.control}
-            name="vip_ticket_amount"
+            name="ticket_amount"
             render={({ field }) => (
               <FormItem className="mb-6 flex flex-row items-center">
                 <div className="flex flex-col gap-1 flex-1">
-                  <FormLabel>VIP Partout billet</FormLabel>
-                  <FormDescription>1299 KR</FormDescription>
+                  <FormLabel>Partout billet</FormLabel>
+                  <FormDescription>799 KR</FormDescription>
                 </div>
                 <FormControl>
                   <PlusMinusInput field={field} max={20} />
@@ -106,28 +119,33 @@ export const Step1BuyTicketsPage = () => {
                 </div>
 
                 <div className="flex flex-row flex-wrap gap-4">
-                  {mockApiAreas.map((areaObj) => (
-                    <FormField
-                      key={areaObj.area}
-                      control={formObject.control}
-                      name="area"
-                      render={({ field }) => (
-                        <FormItem key={areaObj.area}>
-                          <FormControl>
-                            <RadioCard
-                              id={areaObj.area}
-                              value={areaObj.area}
-                              name="area-radio-group"
-                              header={areaObj.area}
-                              subHeader={`${areaObj.available} ledige pladser`}
-                              isChecked={field.value === areaObj.area}
-                              onChange={(newValue) => field.onChange(newValue)}
-                            />
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
+                  {isPending && <LoadingSpinner />}
+                  {error && <p>{error}</p>}
+
+                  {dataAreas
+                    ?.filter((areaObj) => areaObj.available >= totalTicketsAdded && areaObj.available > 0)
+                    .map((areaObj: any) => (
+                      <FormField
+                        key={areaObj.area}
+                        control={formObject.control}
+                        name="area"
+                        render={({ field }) => (
+                          <FormItem key={areaObj.area}>
+                            <FormControl>
+                              <RadioCard
+                                id={areaObj.area}
+                                value={areaObj.area}
+                                name="area-radio-group"
+                                header={areaObj.area}
+                                subHeader={`${areaObj.available} ledige pladser`}
+                                isChecked={field.value === areaObj.area}
+                                onChange={(newValue) => field.onChange(newValue)}
+                              />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                    ))}
                 </div>
                 <FormMessage />
               </FormItem>
@@ -138,7 +156,7 @@ export const Step1BuyTicketsPage = () => {
             size="lg"
             variant="accent"
             className="self-end"
-            disabled={!formObject.formState.isValid || !hasAtleast1Ticket}
+            disabled={formObject.formState.isValid && !hasAtleast1Ticket}
             type="submit"
           >
             Næste

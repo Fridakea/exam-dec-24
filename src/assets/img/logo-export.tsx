@@ -8,15 +8,15 @@ export const Logo = ({ className = "" }) => (
     y="0px"
     width="100%"
     viewBox="47 47 310 310"
-    enable-background="new 47 47 310 310"
+    enableBackground="new 47 47 310 310"
   >
     <path
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M152.000000,283.500000 
 C151.538910,287.902161 154.161728,290.598053 157.535950,292.433929 
@@ -43,9 +43,9 @@ C244.193558,138.295410 242.333328,138.500000 240.500000,138.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="3.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3.000000"
       d="
 M321.500000,159.000000 
 C319.810303,156.096954 316.569183,156.537689 314.036682,155.417099 
@@ -65,9 +65,9 @@ C170.753265,199.435684 166.720825,204.034714 160.500000,205.000000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M265.500000,203.000000 
 C267.127289,206.203934 266.267181,209.655823 266.504425,212.999680 
@@ -91,9 +91,9 @@ C175.867065,228.641205 168.427673,227.550293 162.000000,223.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M328.500000,157.500000 
 C325.407288,158.525085 323.086029,160.074615 320.759094,162.793839 
@@ -109,9 +109,9 @@ C196.784515,228.169083 195.259796,229.546570 195.000000,231.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M54.000000,105.500000 
 C54.937572,108.587021 54.011448,111.155495 52.637909,114.065102 
@@ -125,9 +125,9 @@ C123.755013,201.150040 126.833336,200.833221 130.000000,200.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M238.500000,140.000000 
 C234.632538,142.993347 230.021423,141.825089 226.022842,141.319366 
@@ -140,9 +140,9 @@ C170.829880,184.095596 168.541519,192.291550 159.000000,194.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M311.000000,135.000000 
 C313.132507,144.361313 319.308167,147.694534 326.500244,147.994431 
@@ -156,9 +156,9 @@ C311.435974,133.174072 311.166687,133.833344 311.000000,134.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M238.500000,137.000000 
 C236.592621,134.555511 233.896362,133.580765 230.999420,133.002914 
@@ -174,9 +174,9 @@ C137.039398,143.350189 135.976883,145.025055 134.000000,145.000000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M203.000000,236.500000 
 C204.835007,235.519257 204.541153,233.483673 204.862579,231.970810 
@@ -193,9 +193,9 @@ C201.228729,287.709717 199.037872,288.977264 196.500000,289.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M215.500000,224.500000 
 C219.022522,230.830521 218.918671,237.637436 217.973267,244.496323 
@@ -210,9 +210,9 @@ C148.373856,280.989868 146.013199,276.704865 144.500000,272.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M212.500000,130.000000 
 C206.995850,133.268097 200.597443,134.303726 194.926880,137.364517 
@@ -241,9 +241,9 @@ C63.380642,135.786346 63.333336,134.500000 63.000000,133.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M119.000000,148.000000 
 C123.072937,141.167496 126.589569,140.349731 132.533203,144.451889 
@@ -258,9 +258,9 @@ C149.180908,223.960236 149.000000,225.000000 149.000000,226.000000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M55.000000,111.000000 
 C57.813835,112.852829 59.990345,115.215820 62.128281,117.897736 
@@ -275,9 +275,9 @@ C121.936714,156.573029 121.569328,159.213867 120.000000,161.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="3.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3.000000"
       d="
 M75.000000,154.500000 
 C73.173744,157.783188 76.387199,159.745560 77.678726,161.356735 
@@ -290,9 +290,9 @@ C117.839882,188.037582 122.276474,189.011703 127.000000,187.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M233.500000,154.500000 
 C233.500000,155.333328 233.822617,156.363571 233.452042,156.970734 
@@ -304,9 +304,9 @@ C200.295593,182.470291 194.113449,184.353989 187.500000,184.000000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M71.500000,144.000000 
 C77.780128,143.836090 82.510681,147.890579 87.381203,150.705551 
@@ -319,9 +319,9 @@ C124.484512,172.498581 124.166664,173.500000 123.999992,174.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M237.500000,153.500000 
 C235.161484,153.202942 232.713699,152.999268 230.473557,152.805145 
@@ -334,9 +334,9 @@ C181.429810,179.365601 180.391144,183.085388 180.500000,186.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="3.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3.000000"
       d="
 M149.500000,144.000000 
 C148.963318,151.325974 150.915649,158.377747 152.110947,165.481339 
@@ -348,9 +348,9 @@ C155.422348,179.411179 156.036575,180.502914 157.000000,181.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M326.000000,126.000000 
 C327.873535,126.926323 330.526794,126.053261 331.575562,128.972855 
@@ -364,9 +364,9 @@ C319.532654,128.326859 321.821533,126.321533 325.500000,126.000000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="3.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3.000000"
       d="
 M135.000000,222.500000 
 C124.728287,228.337875 119.132545,237.682739 115.500000,248.500000 
@@ -376,9 +376,9 @@ C124.728287,228.337875 119.132545,237.682739 115.500000,248.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="4.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="4.000000"
       d="
 M251.000000,207.500000 
 C244.465363,207.454544 238.092026,207.879532 233.500000,213.500000 
@@ -388,9 +388,9 @@ C244.465363,207.454544 238.092026,207.879532 233.500000,213.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="3.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3.000000"
       d="
 M209.500000,171.500000 
 C206.833328,172.833328 204.214905,174.277237 201.485962,175.467834 
@@ -402,9 +402,9 @@ C194.184708,171.819336 196.374756,170.077011 198.000000,168.000000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2.000000"
       d="
 M205.500000,162.000000 
 C209.196289,162.363892 211.959641,157.956711 216.010315,159.979324 
@@ -415,9 +415,9 @@ C217.277405,160.612015 218.666672,161.000000 220.000000,161.500000
       fill="none"
       opacity="1.000000"
       stroke="currentColor"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="3.000000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="3.000000"
       d="
 M221.500000,160.500000 
 C218.567795,161.445389 220.156876,166.158508 216.500000,166.500000 

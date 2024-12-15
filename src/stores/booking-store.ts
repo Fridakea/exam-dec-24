@@ -1,3 +1,4 @@
+import { stat } from "fs";
 import { create } from "zustand";
 
 type BookingAddons = {
@@ -27,11 +28,13 @@ type BookingState = {
   addons: BookingAddons;
   setAddons: (newAddons: BookingAddons) => void;
 
+  getTotalPrice: () => number;
+
   paymentInfo: PaymentInfo;
   setPaymentInfo: (newValue: PaymentInfo) => void;
 };
 
-export const useBookingStore = create<BookingState>((set) => ({
+export const useBookingStore = create<BookingState>((set, get) => ({
   // Tickets
   totalTickets: 0,
   totalVipTickets: 0,
@@ -49,6 +52,22 @@ export const useBookingStore = create<BookingState>((set) => ({
     largeTents: 0,
   },
   setAddons: (newAddons) => set((state) => ({ ...state, addons: newAddons })),
+
+  getTotalPrice: () => {
+    const { totalTickets, totalVipTickets, area, addons } = get();
+    let basePrice = addons.greenCamping ? 249 : 0;
+    basePrice = area.length > 0 ? 99 : 0;
+    return (
+      basePrice +
+      totalVipTickets * 1299 +
+      totalTickets * 799 +
+      addons.chairs * 79 +
+      addons.pavillons * 149 +
+      addons.smallTents * 199 +
+      addons.mediumTents * 299 +
+      addons.largeTents * 399
+    );
+  },
 
   paymentInfo: {
     cardholder_name: "",

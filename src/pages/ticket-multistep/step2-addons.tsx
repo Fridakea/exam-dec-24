@@ -1,4 +1,4 @@
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,9 +41,16 @@ export const Step2BuyAddonsPage = () => {
     },
   });
 
+  // This useEffect runs only once, when the component mounts.
+  useEffect(() => {
+    // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
+    formObject.watch(() => {
+      setAddons(formObject.getValues());
+    });
+  }, []);
+
   const handleSubmit = (values: FormData) => {
     console.log("values: ", values);
-
     setAddons(values);
 
     navigate(`${ERoutes.BUY_TICKET}/3`);

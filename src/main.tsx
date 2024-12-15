@@ -17,7 +17,7 @@ import { Step5ConfirmationPage } from "./pages/ticket-multistep/step5-confirmati
 import { Step6ReceiptPage } from "./pages/ticket-multistep/step6-receipt";
 import { TicketFlowLayout } from "./pages/ticket-multistep/ticket-flow-layout";
 
-export const apiBaseUrl = "http://localhost:8080"; // "https://pentagonal-holy-beetle.glitch.me";
+export const apiBaseUrl = "https://pentagonal-holy-beetle.glitch.me"; // "http://localhost:8080";
 
 export enum ERoutes {
   HOME = "/",

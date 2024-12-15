@@ -16,27 +16,15 @@ import {
 import { BasketSection } from "./BasketSection";
 
 export function Basket() {
-  const { totalTickets, totalVipTickets, addons } = useBookingStore();
-  const { greenCamping, chairs, pavillons, smallTents, mediumTents, largeTents } = addons;
+  const { getTotalPrice } = useBookingStore();
 
   // Calculate total sum and formating as DKK link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
-  const calcSum = greenCamping
-    ? 249
-    : 0 +
-      totalVipTickets * 1299 +
-      totalTickets * 799 +
-      99 +
-      chairs * 79 +
-      pavillons * 149 +
-      smallTents * 199 +
-      mediumTents * 299 +
-      largeTents * 399;
   const moneyFormatter = new Intl.NumberFormat("da-DK", {
     style: "currency",
     currency: "DKK",
     minimumFractionDigits: 0,
   });
-  const totalSum = moneyFormatter.format(calcSum);
+  const totalSum = moneyFormatter.format(getTotalPrice());
 
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();

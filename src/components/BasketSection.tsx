@@ -33,7 +33,7 @@ export const BasketSection = () => {
       )}
 
       {area.length > 0 && (
-        <TicketItem price={799}>
+        <TicketItem price={99}>
           <>
             <h3 className="flex items-center gap-2">Camping Reservation</h3>
             <p className="text-base text-accent">{area}</p>
