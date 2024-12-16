@@ -5,9 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ERoutes } from "@/main";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useBookingStore } from "@/stores/booking-store";
 import { Label } from "@/components/ui/label";
 import { Basket } from "@/components/Basket";
@@ -95,6 +94,7 @@ export const Step3ContactInformationPage = () => {
                                   <Label>Fornavn</Label>
                                   <Input
                                     value={field.value[ticket - 1]?.first_name}
+                                    required
                                     onChange={(e) =>
                                       field.onChange(
                                         getUpdatedContactInfo("first_name", e.currentTarget.value, ticket, field.value)
@@ -108,6 +108,7 @@ export const Step3ContactInformationPage = () => {
                                   <label>Efternavn</label>
                                   <Input
                                     value={field.value[ticket - 1]?.last_name}
+                                    required
                                     onChange={(e) =>
                                       field.onChange(
                                         getUpdatedContactInfo("last_name", e.currentTarget.value, ticket, field.value)
@@ -123,6 +124,7 @@ export const Step3ContactInformationPage = () => {
                                   <label>Telefon</label>
                                   <Input
                                     value={field.value[ticket - 1]?.telephone}
+                                    required
                                     className="max-w-[65%] sm:max-w-full"
                                     onChange={(e) =>
                                       field.onChange(
@@ -137,6 +139,7 @@ export const Step3ContactInformationPage = () => {
                                   <label>Email</label>
                                   <Input
                                     value={field.value[ticket - 1]?.email}
+                                    required
                                     onChange={(e) =>
                                       field.onChange(
                                         getUpdatedContactInfo("email", e.currentTarget.value, ticket, field.value)

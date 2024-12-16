@@ -10,7 +10,7 @@ export const BasketSection = () => {
   const { greenCamping, chairs, pavillons, smallTents, mediumTents, largeTents } = addons;
 
   return (
-    <section className="sm:h-[50vh]">
+    <section className="sm:h-[60vh]">
       {totalVipTickets <= 0 && totalTickets <= 0 && area.length <= 0 && (
         <div>
           <p>Kurven er tom</p>
