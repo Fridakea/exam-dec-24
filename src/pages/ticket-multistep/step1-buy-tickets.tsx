@@ -28,8 +28,6 @@ export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
   const { startCountdown } = useCountdownStore();
 
-  // const [customErrorMessage, setCustomErrorMessage] = useState<string | null>(null);
-
   const { totalTickets, totalVipTickets, setTotalTickets, setTotalVipTickets, setArea } = useBookingStore();
   const totalTicketsAdded = totalTickets + totalVipTickets;
 
@@ -59,18 +57,6 @@ export const Step1BuyTicketsPage = () => {
   const amount = totalTickets + totalVipTickets;
 
   const handleSubmit = async () => {
-    // TODO implement or remove
-    // Custom validation
-    // console.log(values);
-    // if (values.area.length <= 0) {
-    //   setCustomErrorMessage("Vælg 1 område");
-    //   return;
-    // } else if (amount <= 0) {
-    //   setCustomErrorMessage("Vælg minimum 1 billet");
-    //   return;
-    // }
-    // setCustomErrorMessage(null);
-
     setTotalTickets(formObject.getValues().ticket_amount);
     setTotalVipTickets(formObject.getValues().vip_ticket_amount);
     setArea(formObject.getValues().area);
@@ -170,7 +156,6 @@ export const Step1BuyTicketsPage = () => {
             )}
           />
 
-          {/* {customErrorMessage && <p className="text-destructive">{customErrorMessage}</p>} */}
           <Button
             size="lg"
             variant="accent"
