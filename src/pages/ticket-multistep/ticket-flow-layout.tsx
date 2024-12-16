@@ -1,11 +1,13 @@
 import { Link, Outlet } from "react-router-dom";
 import { ERoutes } from "@/main";
 import { Logo } from "@/assets/img/logo-export";
-import { useGlobalCountdown } from "@/hooks/use-global-countdown";
+import { formatSeconds, useCountdownStore } from "@/stores/use-countdown-store";
 import { twMerge } from "tailwind-merge";
 
 export const TicketFlowLayout = () => {
-  const { minutes, seconds } = useGlobalCountdown();
+  const { remainingSeconds } = useCountdownStore();
+
+  const { minutes, seconds } = formatSeconds(remainingSeconds);
 
   return (
     <div>
@@ -22,15 +24,14 @@ export const TicketFlowLayout = () => {
       </header>
       <main className="max-w-screen mx-auto p-4 sm:max-w-[1200px]">
         <div className="mb-6">
-          {/* seconds > 0 && */}
-          {
+          {remainingSeconds > 0 && (
             <p className="w-full text-center flex items-center justify-center gap-2">
               Tid til at gennemføre
-              <span className={twMerge(minutes <= 1 ? "text-destructive" : "", "~text-lg/xl font-bold")}>
+              <span className={twMerge(remainingSeconds <= 1 ? "text-destructive" : "", "~text-lg/xl font-bold")}>
                 {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </span>
             </p>
-          }
+          )}
         </div>
         <Outlet />
       </main>

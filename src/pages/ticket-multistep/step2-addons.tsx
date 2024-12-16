@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useGlobalCountdown } from "@/hooks/use-global-countdown";
+import { useCountdownStore } from "@/stores/use-countdown-store";
 
 import { Button } from "@/components/ui/button";
 import { ERoutes } from "@/main";
@@ -26,7 +26,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const Step2BuyAddonsPage = () => {
   const navigate = useNavigate();
-  const { startCountdown } = useGlobalCountdown();
+  const { startCountdown } = useCountdownStore();
 
   // TODO save the addons the user chooses
   const { setAddons } = useBookingStore();

@@ -2,18 +2,18 @@ import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import useFetch from "@/hooks/useFetch";
+import useFetch from "@/hooks/use-fetch";
+import { useEffect } from "react";
 import { apiBaseUrl, ERoutes } from "@/main";
+import { useBookingStore } from "@/stores/booking-store";
+import { putReserve } from "@/lib/api";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
-import { useBookingStore } from "@/stores/booking-store";
 import { Basket } from "@/components/Basket";
-import useFetch from "@/hooks/use-fetch";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { useEffect } from "react";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
@@ -41,9 +41,6 @@ export const Step1BuyTicketsPage = () => {
     mode: "onSubmit",
   });
 
-  // True/false baseret på om der er valgt mindst 1 billet i alt.
-  const hasAtleast1Ticket = formObject.getValues().ticket_amount > 0 || formObject.getValues().vip_ticket_amount > 0;
-
   // This useEffect runs only once, when the component mounts.
   useEffect(() => {
     // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
@@ -54,12 +51,16 @@ export const Step1BuyTicketsPage = () => {
     });
   }, []);
 
+  const amount = totalTickets + totalVipTickets;
+
   const handleSubmit = (values: FormData) => {
     console.log("values: ", values);
 
     setTotalTickets(formObject.getValues().ticket_amount);
     setTotalVipTickets(formObject.getValues().vip_ticket_amount);
     setArea(formObject.getValues().area);
+
+    putReserve(formObject.getValues().area, amount);
 
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };
@@ -156,7 +157,7 @@ export const Step1BuyTicketsPage = () => {
             size="lg"
             variant="accent"
             className="self-end"
-            disabled={formObject.formState.isValid && !hasAtleast1Ticket}
+            disabled={!formObject.formState.isValid && !(amount > 0)}
             type="submit"
           >
             Næste
