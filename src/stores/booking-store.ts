@@ -32,6 +32,9 @@ type BookingState = {
 
   paymentInfo: PaymentInfo;
   setPaymentInfo: (newValue: PaymentInfo) => void;
+
+  reservationId: string | null;
+  setReservationId: (newValue: string | null) => void;
 };
 
 export const useBookingStore = create<BookingState>((set, get) => ({
@@ -39,8 +42,8 @@ export const useBookingStore = create<BookingState>((set, get) => ({
   totalTickets: 0,
   totalVipTickets: 0,
   area: "",
-  setTotalTickets: (newAmount) => set((state) => ({ ...state, totalTickets: newAmount })),
-  setTotalVipTickets: (newAmount) => set((state) => ({ ...state, totalVipTickets: newAmount })),
+  setTotalTickets: (newAmount) => set({ totalTickets: newAmount }),
+  setTotalVipTickets: (newAmount) => set({ totalVipTickets: newAmount }),
   setArea: (newValue) => set(() => ({ area: newValue })),
 
   addons: {
@@ -51,7 +54,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     mediumTents: 0,
     largeTents: 0,
   },
-  setAddons: (newAddons) => set((state) => ({ ...state, addons: newAddons })),
+  setAddons: (newAddons) => set({ addons: newAddons }),
 
   getTotalPrice: () => {
     const { totalTickets, totalVipTickets, area, addons } = get();
@@ -75,24 +78,8 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     expiration: "",
     cvc: undefined,
   },
-  setPaymentInfo: (newValue) => set((state) => ({ ...state, paymentInfo: newValue })),
-}));
+  setPaymentInfo: (newValue) => set({ paymentInfo: newValue }),
 
-// Calculate total sum and formating as DKK link: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
-// const calcSum = greenCamping
-//   ? 249
-//   : 0 +
-//     totalVipTickets * 1299 +
-//     totalTickets * 799 +
-//     99 +
-//     chairs * 79 +
-//     pavillons * 149 +
-//     smallTents * 199 +
-//     mediumTents * 299 +
-//     largeTents * 399;
-// const moneyFormatter = new Intl.NumberFormat("da-DK", {
-//   style: "currency",
-//   currency: "DKK",
-//   minimumFractionDigits: 0,
-// });
-// const totalSum = moneyFormatter.format(calcSum);
+  reservationId: null,
+  setReservationId: (newValue) => set({ reservationId: newValue }),
+}));

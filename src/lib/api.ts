@@ -3,10 +3,15 @@ import { apiBaseUrl } from "@/main";
 const headersList = {
   Accept: "application/json",
   "Content-Type": "application/json",
-  Prefer: "return=representation",
 };
 
-export async function putReserve(area: string, amount: number) {
+type PutReserveResult = {
+  message: string;
+  id: string;
+  timeout: number;
+};
+
+export const putReserve = async (area: string, amount: number): Promise<PutReserveResult> => {
   const response = await fetch(`${apiBaseUrl}/reserve-spot`, {
     method: "PUT",
     headers: headersList,
@@ -17,7 +22,7 @@ export async function putReserve(area: string, amount: number) {
   });
 
   return await response.json();
-}
+};
 
 export async function postFullfill(id: string) {
   const response = await fetch(`${apiBaseUrl}/fullfill-reservation`, {

@@ -4,9 +4,17 @@ import { useNavigate } from "react-router";
 import { TicketIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { BasketSection } from "@/components/BasketSection";
+import { useCountdownStore } from "@/stores/use-countdown-store";
+import { useEffect } from "react";
 
 export const Step6ReceiptPage = () => {
   const navigate = useNavigate();
+
+  const { stopCountdown } = useCountdownStore();
+
+  useEffect(() => {
+    stopCountdown();
+  }, []);
 
   return (
     <section className="flex flex-col sm:flex-row gap-16 sm:*:w-1/2">

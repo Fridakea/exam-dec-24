@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useBookingStore } from "@/stores/booking-store";
 import { Label } from "@/components/ui/label";
 import { Basket } from "@/components/Basket";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   contact_info: z.array(
@@ -35,7 +36,7 @@ export const Step3ContactInformationPage = () => {
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      contact_info: ticketNumbers.map((_) => ({
+      contact_info: [...ticketNumbers, ...vipTicketNumbers].map((_) => ({
         first_name: "",
         last_name: "",
         telephone: "",
@@ -62,7 +63,16 @@ export const Step3ContactInformationPage = () => {
     navigate(`${ERoutes.BUY_TICKET}/4`);
   };
 
-  console.log(formObject.getValues());
+  // For debugging
+  useEffect(() => {
+    console.log("Default values: ", formObject.getValues());
+    formObject.watch(() => {
+      console.log(formObject.getValues());
+      const result = formSchema.safeParse(formObject.getValues());
+
+      if (!result.success) console.log(result.error.errors);
+    });
+  }, []);
 
   return (
     <section className="flex flex-col sm:flex-row gap-10 *:flex-1">
@@ -171,10 +181,15 @@ export const Step3ContactInformationPage = () => {
                                 <div>
                                   <Label>Fornavn</Label>
                                   <Input
-                                    value={field.value[ticket - 1]?.first_name}
+                                    value={field.value[ticket + totalVipTickets - 1]?.first_name}
                                     onChange={(e) =>
                                       field.onChange(
-                                        getUpdatedContactInfo("first_name", e.currentTarget.value, ticket, field.value)
+                                        getUpdatedContactInfo(
+                                          "first_name",
+                                          e.currentTarget.value,
+                                          ticket + totalVipTickets,
+                                          field.value
+                                        )
                                       )
                                     }
                                     type="text"
@@ -184,10 +199,15 @@ export const Step3ContactInformationPage = () => {
                                 <div className="mb-3">
                                   <label>Efternavn</label>
                                   <Input
-                                    value={field.value[ticket - 1]?.last_name}
+                                    value={field.value[ticket + totalVipTickets - 1]?.last_name}
                                     onChange={(e) =>
                                       field.onChange(
-                                        getUpdatedContactInfo("last_name", e.currentTarget.value, ticket, field.value)
+                                        getUpdatedContactInfo(
+                                          "last_name",
+                                          e.currentTarget.value,
+                                          ticket + totalVipTickets,
+                                          field.value
+                                        )
                                       )
                                     }
                                     type="text"
@@ -199,11 +219,16 @@ export const Step3ContactInformationPage = () => {
                                 <div className="flex-1">
                                   <label>Telefon</label>
                                   <Input
-                                    value={field.value[ticket - 1]?.telephone}
+                                    value={field.value[ticket + totalVipTickets - 1]?.telephone}
                                     className="max-w-[65%] sm:max-w-full"
                                     onChange={(e) =>
                                       field.onChange(
-                                        getUpdatedContactInfo("telephone", e.currentTarget.value, ticket, field.value)
+                                        getUpdatedContactInfo(
+                                          "telephone",
+                                          e.currentTarget.value,
+                                          ticket + totalVipTickets,
+                                          field.value
+                                        )
                                       )
                                     }
                                     type="tel"
@@ -213,10 +238,15 @@ export const Step3ContactInformationPage = () => {
                                 <div className="flex-[2]">
                                   <label>Email</label>
                                   <Input
-                                    value={field.value[ticket - 1]?.email}
+                                    value={field.value[ticket + totalVipTickets - 1]?.email}
                                     onChange={(e) =>
                                       field.onChange(
-                                        getUpdatedContactInfo("email", e.currentTarget.value, ticket, field.value)
+                                        getUpdatedContactInfo(
+                                          "email",
+                                          e.currentTarget.value,
+                                          ticket + totalVipTickets,
+                                          field.value
+                                        )
                                       )
                                     }
                                     type="email"

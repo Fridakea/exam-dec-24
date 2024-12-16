@@ -21,11 +21,11 @@ export const useCountdownStore = create<CountdownStore>((set, get) => ({
       return { intervalId: newId }; // return the new one
     }),
   startCountdown: (totalSeconds: number) => {
-    const { remainingSeconds, setRemainingSeconds, setIntervalId } = get();
+    const { setRemainingSeconds, setIntervalId } = get();
     setRemainingSeconds(totalSeconds);
 
     // Prevent multiple intervals from being set
-    if (remainingSeconds <= 0 || get().intervalId) return;
+    if (get().intervalId) return;
 
     const interval = setInterval(() => {
       const currentSeconds = get().remainingSeconds;
@@ -40,10 +40,11 @@ export const useCountdownStore = create<CountdownStore>((set, get) => ({
     setIntervalId(interval);
   },
   stopCountdown: () => {
-    const { intervalId, setIntervalId } = get();
+    const { intervalId, setIntervalId, setRemainingSeconds } = get();
     if (intervalId) {
       clearInterval(intervalId);
       setIntervalId(null);
+      setRemainingSeconds(0);
     }
   },
 }));

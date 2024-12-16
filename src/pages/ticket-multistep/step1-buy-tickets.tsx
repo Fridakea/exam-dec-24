@@ -3,7 +3,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import useFetch from "@/hooks/use-fetch";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { apiBaseUrl, ERoutes } from "@/main";
 import { useBookingStore } from "@/stores/booking-store";
 import { putReserve } from "@/lib/api";
@@ -14,6 +14,7 @@ import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
 import { Basket } from "@/components/Basket";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { useCountdownStore } from "@/stores/use-countdown-store";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
@@ -25,6 +26,9 @@ type FormData = z.infer<typeof formSchema>;
 
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
+  const { startCountdown } = useCountdownStore();
+
+  // const [customErrorMessage, setCustomErrorMessage] = useState<string | null>(null);
 
   const { totalTickets, totalVipTickets, setTotalTickets, setTotalVipTickets, setArea } = useBookingStore();
   const totalTicketsAdded = totalTickets + totalVipTickets;
@@ -45,6 +49,7 @@ export const Step1BuyTicketsPage = () => {
   useEffect(() => {
     // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
     formObject.watch(() => {
+      console.log(formObject.getValues());
       setTotalTickets(formObject.getValues().ticket_amount);
       setTotalVipTickets(formObject.getValues().vip_ticket_amount);
       setArea(formObject.getValues().area);
@@ -53,14 +58,26 @@ export const Step1BuyTicketsPage = () => {
 
   const amount = totalTickets + totalVipTickets;
 
-  const handleSubmit = (values: FormData) => {
-    console.log("values: ", values);
+  const handleSubmit = async () => {
+    // TODO implement or remove
+    // Custom validation
+    // console.log(values);
+    // if (values.area.length <= 0) {
+    //   setCustomErrorMessage("Vælg 1 område");
+    //   return;
+    // } else if (amount <= 0) {
+    //   setCustomErrorMessage("Vælg minimum 1 billet");
+    //   return;
+    // }
+    // setCustomErrorMessage(null);
 
     setTotalTickets(formObject.getValues().ticket_amount);
     setTotalVipTickets(formObject.getValues().vip_ticket_amount);
     setArea(formObject.getValues().area);
 
-    putReserve(formObject.getValues().area, amount);
+    const response = await putReserve(formObject.getValues().area, amount);
+    console.log(response);
+    startCountdown(response.timeout / 1000);
 
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };
@@ -143,21 +160,22 @@ export const Step1BuyTicketsPage = () => {
                                 onChange={(newValue) => field.onChange(newValue)}
                               />
                             </FormControl>
+                            <FormMessage />
                           </FormItem>
                         )}
                       />
                     ))}
                 </div>
-                <FormMessage />
               </FormItem>
             )}
           />
 
+          {/* {customErrorMessage && <p className="text-destructive">{customErrorMessage}</p>} */}
           <Button
             size="lg"
             variant="accent"
             className="self-end"
-            disabled={!formObject.formState.isValid && !(amount > 0)}
+            disabled={!formObject.formState.isValid || amount <= 0} //
             type="submit"
           >
             Næste
