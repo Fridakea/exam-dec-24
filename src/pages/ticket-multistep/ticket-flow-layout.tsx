@@ -1,11 +1,11 @@
 import { Link, Outlet } from "react-router-dom";
 import { ERoutes } from "@/main";
 import { Logo } from "@/assets/img/logo-export";
-import { useDateCountdown } from "@/hooks/use-date-countdown";
+import { useGlobalCountdown } from "@/hooks/use-global-countdown";
 import { twMerge } from "tailwind-merge";
 
 export const TicketFlowLayout = () => {
-  const { minutes, seconds } = useDateCountdown(0);
+  const { minutes, seconds } = useGlobalCountdown();
 
   return (
     <div>
@@ -27,7 +27,7 @@ export const TicketFlowLayout = () => {
             <p className="w-full text-center flex items-center justify-center gap-2">
               Tid til at gennemføre
               <span className={twMerge(minutes <= 1 ? "text-destructive" : "", "~text-lg/xl font-bold")}>
-                {minutes}:{seconds}
+                {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
               </span>
             </p>
           }

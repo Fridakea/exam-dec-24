@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useGlobalCountdown } from "@/hooks/use-global-countdown";
 
 import { Button } from "@/components/ui/button";
 import { ERoutes } from "@/main";
@@ -25,6 +26,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const Step2BuyAddonsPage = () => {
   const navigate = useNavigate();
+  const { startCountdown } = useGlobalCountdown();
 
   // TODO save the addons the user chooses
   const { setAddons } = useBookingStore();
@@ -43,6 +45,7 @@ export const Step2BuyAddonsPage = () => {
 
   // This useEffect runs only once, when the component mounts.
   useEffect(() => {
+    startCountdown(5 * 60);
     // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
     formObject.watch(() => {
       setAddons(formObject.getValues());

@@ -14,7 +14,6 @@ import { Basket } from "@/components/Basket";
 import useFetch from "@/hooks/use-fetch";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useEffect } from "react";
-import { useDateCountdown } from "@/hooks/use-date-countdown";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),
@@ -54,8 +53,6 @@ export const Step1BuyTicketsPage = () => {
       setArea(formObject.getValues().area);
     });
   }, []);
-
-  const { updateRemainingSeconds } = useDateCountdown(0);
 
   const handleSubmit = (values: FormData) => {
     console.log("values: ", values);

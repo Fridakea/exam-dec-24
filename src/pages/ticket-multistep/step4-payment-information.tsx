@@ -26,7 +26,8 @@ const dateRegex = "^(0[1-9]?|1[0-2]?)?\\d{0,2}$";
 export const Step4PaymentInformationPage = () => {
   const navigate = useNavigate();
 
-  const { setPaymentInfo } = useBookingStore();
+  const { paymentInfo, setPaymentInfo } = useBookingStore();
+  const { cardholder_name, card_number, expiration, cvc } = paymentInfo;
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -41,7 +42,6 @@ export const Step4PaymentInformationPage = () => {
 
   const handleSubmit = (values: FormData) => {
     console.log(values);
-
     setPaymentInfo(values);
 
     navigate(`${ERoutes.BUY_TICKET}/5`);
@@ -59,10 +59,10 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="cardholder_name"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem defaultValue={cardholder_name}>
                     <FormLabel>Kortholders navn</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" className="" />
+                      <Input {...field} type="text" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -73,7 +73,7 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="card_number"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem defaultValue={card_number}>
                     <FormLabel>Kortnummer</FormLabel>
                     <FormControl>
                       <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} />
@@ -89,7 +89,7 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="expiration"
                 render={({ field }) => (
-                  <FormItem className="min-w-[155px]">
+                  <FormItem className="min-w-[155px]" defaultValue={expiration}>
                     <FormLabel>
                       Udløbsdato <span className="text-muted-foreground text-xs">(MM/ÅÅ)</span>
                     </FormLabel>
@@ -115,7 +115,7 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="cvc"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem defaultValue={cvc}>
                     <FormLabel>CVC</FormLabel>
                     <FormControl>
                       <Input
