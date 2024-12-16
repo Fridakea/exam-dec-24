@@ -28,7 +28,8 @@ export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
   const { startCountdown } = useCountdownStore();
 
-  const { totalTickets, totalVipTickets, setTotalTickets, setTotalVipTickets, setArea } = useBookingStore();
+  const { totalTickets, totalVipTickets, setTotalTickets, setTotalVipTickets, setArea, setReservationId } =
+    useBookingStore();
   const totalTicketsAdded = totalTickets + totalVipTickets;
 
   const { error, isPending, data: dataAreas } = useFetch(`${apiBaseUrl}/available-spots`);
@@ -64,6 +65,7 @@ export const Step1BuyTicketsPage = () => {
     const response = await putReserve(formObject.getValues().area, amount);
     console.log(response);
     startCountdown(response.timeout / 1000);
+    setReservationId(response.id);
 
     navigate(`${ERoutes.BUY_TICKET}/2`);
   };

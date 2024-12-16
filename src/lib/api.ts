@@ -24,12 +24,19 @@ export const putReserve = async (area: string, amount: number): Promise<PutReser
   return await response.json();
 };
 
-export async function postFullfill(id: string) {
+type PostFullfillResult = {
+  error: boolean;
+  message: string;
+};
+export const postFullfill = async (id: string): Promise<PostFullfillResult> => {
   const response = await fetch(`${apiBaseUrl}/fullfill-reservation`, {
     method: "POST",
     headers: headersList,
     body: JSON.stringify({ id: id }),
   });
 
-  return await response.json();
-}
+  return {
+    error: response.status > 300,
+    message: await response.json(),
+  };
+};

@@ -3,11 +3,23 @@ import { ERoutes } from "@/main";
 import { Logo } from "@/assets/img/logo-export";
 import { formatSeconds, useCountdownStore } from "@/stores/use-countdown-store";
 import { twMerge } from "tailwind-merge";
+import { useEffect } from "react";
 
 export const TicketFlowLayout = () => {
-  const { remainingSeconds } = useCountdownStore();
+  const { remainingSeconds, hasCountdownFinished, setHasCountdownFinished, stopCountdown } = useCountdownStore();
 
   const { minutes, seconds } = formatSeconds(remainingSeconds);
+
+  useEffect(() => {
+    console.log(hasCountdownFinished);
+    if (hasCountdownFinished) {
+      window.alert("Time ran out! make a new reservation.");
+      setHasCountdownFinished(false);
+      stopCountdown();
+
+      // TODO: Clear store values, and navigate. Make clearStore function in the store.
+    }
+  }, [hasCountdownFinished]);
 
   return (
     <div>

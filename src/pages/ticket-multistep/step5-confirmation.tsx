@@ -1,25 +1,29 @@
-import { FormEventHandler } from "react";
 import { useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import { ERoutes } from "@/main";
 import { BasketSection } from "@/components/BasketSection";
 import { useBookingStore } from "@/stores/booking-store";
+import { postFullfill } from "@/lib/api";
 
 export const Step5ConfirmationPage = () => {
   const navigate = useNavigate();
 
-  const { paymentInfo } = useBookingStore();
+  const { paymentInfo, reservationId } = useBookingStore();
   const { cardholder_name, card_number, expiration, cvc } = paymentInfo;
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    console.log(e);
+  const handleSubmit = async () => {
+    if (!reservationId) {
+      window.alert("failed to finish reservation (no id)");
+      return;
+    }
+    const { error, message } = await postFullfill(reservationId);
+    if (error) window.alert(message);
     navigate(`${ERoutes.BUY_TICKET}/6`);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col">
+    <section className="flex flex-col">
       <h1 className="mb-8">Din Bestilling</h1>
 
       <section className="flex flex-col sm:flex-row sm:*:w-[50%] gap-2 sm:gap-12">
@@ -55,9 +59,9 @@ export const Step5ConfirmationPage = () => {
         </div>
       </section>
 
-      <Button size="lg" variant="accent" className="self-end" type="submit">
+      <Button size="lg" variant="accent" className="self-end" onClick={handleSubmit}>
         Gennemfør køb
       </Button>
-    </form>
+    </section>
   );
 };

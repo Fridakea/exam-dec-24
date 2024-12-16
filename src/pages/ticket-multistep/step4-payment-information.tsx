@@ -32,10 +32,10 @@ export const Step4PaymentInformationPage = () => {
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      cardholder_name: "",
-      card_number: undefined,
-      expiration: "",
-      cvc: undefined,
+      cardholder_name: cardholder_name,
+      card_number: card_number,
+      expiration: expiration,
+      cvc: cvc,
     },
     mode: "onTouched",
   });
@@ -59,7 +59,7 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="cardholder_name"
                 render={({ field }) => (
-                  <FormItem defaultValue={cardholder_name}>
+                  <FormItem>
                     <FormLabel>Kortholders navn</FormLabel>
                     <FormControl>
                       <Input {...field} type="text" />
@@ -73,7 +73,7 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="card_number"
                 render={({ field }) => (
-                  <FormItem defaultValue={card_number}>
+                  <FormItem>
                     <FormLabel>Kortnummer</FormLabel>
                     <FormControl>
                       <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} />
@@ -89,7 +89,7 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="expiration"
                 render={({ field }) => (
-                  <FormItem className="min-w-[155px]" defaultValue={expiration}>
+                  <FormItem className="min-w-[155px]">
                     <FormLabel>
                       Udløbsdato <span className="text-muted-foreground text-xs">(MM/ÅÅ)</span>
                     </FormLabel>
@@ -115,7 +115,7 @@ export const Step4PaymentInformationPage = () => {
                 control={formObject.control}
                 name="cvc"
                 render={({ field }) => (
-                  <FormItem defaultValue={cvc}>
+                  <FormItem>
                     <FormLabel>CVC</FormLabel>
                     <FormControl>
                       <Input
