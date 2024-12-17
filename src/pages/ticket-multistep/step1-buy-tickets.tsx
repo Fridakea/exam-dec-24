@@ -6,7 +6,7 @@ import useFetch from "@/hooks/use-fetch";
 import { useEffect } from "react";
 import { ERoutes } from "@/main";
 import { useBookingStore } from "@/stores/booking-store";
-import { apiBaseUrl, putReserve } from "@/lib/api";
+import { apiBaseUrl, AreaData, putReserve } from "@/lib/api";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -28,11 +28,11 @@ export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
   const { startCountdown } = useCountdownStore();
 
+  const { error, isPending, data: dataAreas } = useFetch<AreaData[]>(`${apiBaseUrl}/available-spots`);
+
   const { totalTickets, totalVipTickets, setTotalTickets, setTotalVipTickets, setArea, setReservationId } =
     useBookingStore();
   const totalTicketsAdded = totalTickets + totalVipTickets;
-
-  const { error, isPending, data: dataAreas } = useFetch(`${apiBaseUrl}/available-spots`);
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -129,7 +129,7 @@ export const Step1BuyTicketsPage = () => {
                   {error && <p>{error}</p>}
 
                   {dataAreas
-                    ?.filter((areaObj) => areaObj.available >= totalTicketsAdded && areaObj.available > 0)
+                    ?.filter((areaObj: any) => areaObj.available >= totalTicketsAdded && areaObj.available > 0)
                     .map((areaObj: any) => (
                       <FormField
                         key={areaObj.area}

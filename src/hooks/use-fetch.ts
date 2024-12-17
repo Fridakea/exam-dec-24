@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-const useFetch = (url: string) => {
-  const [data, setData] = useState<any[]>([]);
+const useFetch = <T>(url: string) => {
+  const [data, setData] = useState<T | null>(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,7 +15,7 @@ const useFetch = (url: string) => {
           }
           return res.json();
         })
-        .then((data) => {
+        .then((data: T) => {
           setIsPending(false);
           setData(data);
           setError(null);

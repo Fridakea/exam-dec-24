@@ -21,7 +21,7 @@ export enum ERoutes {
   HOME = "/",
   SCHEDULE = "/program",
   BUY_TICKET = "/billet",
-  ARTIST = "/artist",
+  BAND = "/artist",
 }
 
 createRoot(document.getElementById("root")!).render(
@@ -31,7 +31,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/" element={<Layout />}>
           <Route path={ERoutes.HOME} element={<LandingPage />} />
           <Route path={ERoutes.SCHEDULE} element={<SchedulePage />} />
-          <Route path={`${ERoutes.ARTIST}/:slug`} element={<ArtistPage />} />
+          <Route path={`${ERoutes.BAND}/:slug`} element={<ArtistPage />} />
         </Route>
 
         <Route path={ERoutes.BUY_TICKET} element={<TicketFlowLayout />}>
