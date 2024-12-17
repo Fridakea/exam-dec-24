@@ -1,4 +1,4 @@
-import { apiBaseUrl } from "@/main";
+export const apiBaseUrl = "https://pentagonal-holy-beetle.glitch.me"; // "http://localhost:8080";
 
 const headersList = {
   Accept: "application/json",

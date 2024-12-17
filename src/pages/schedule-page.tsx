@@ -3,7 +3,8 @@ import useFetch from "@/hooks/use-fetch";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { apiBaseUrl, ERoutes } from "@/main";
+import { ERoutes } from "@/main";
+import { apiBaseUrl } from "@/lib/api";
 
 export const SchedulePage = () => {
   const { error, isPending, data } = useFetch(`${apiBaseUrl}/bands`);
