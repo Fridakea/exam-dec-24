@@ -29,6 +29,21 @@ export const Step2BuyAddonsPage = () => {
   // TODO save the addons the user chooses
   const { area, setAddons, resetFlow } = useBookingStore();
 
+  // This useEffect runs only once, when the component mounts.
+  useEffect(() => {
+    console.log("area.length: ", area.length);
+    // If no area is choosen in the booking store - clear store values, and navigate.
+    {
+      area.length <= 0 && resetFlow();
+      area.length <= 0 && navigate(ERoutes.BUY_TICKET);
+    }
+
+    // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
+    formObject.watch(() => {
+      setAddons(formObject.getValues());
+    });
+  }, []);
+
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,21 +55,6 @@ export const Step2BuyAddonsPage = () => {
       largeTents: 0,
     },
   });
-
-  // This useEffect runs only once, when the component mounts.
-  useEffect(() => {
-    console.log("area.length: ", area.length);
-    // If no area is choosen in the booking store - clear store values, and navigate.
-    {
-      area.length < 1 && resetFlow();
-      area.length < 1 && navigate(ERoutes.BUY_TICKET);
-    }
-
-    // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
-    formObject.watch(() => {
-      setAddons(formObject.getValues());
-    });
-  }, []);
 
   const handleSubmit = (values: FormData) => {
     console.log("values: ", values);

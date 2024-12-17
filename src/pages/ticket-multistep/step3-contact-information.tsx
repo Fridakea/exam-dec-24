@@ -26,12 +26,22 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const Step3ContactInformationPage = () => {
-  const { totalTickets, totalVipTickets } = useBookingStore();
+  const { totalTickets, totalVipTickets, area, resetFlow } = useBookingStore();
 
   const ticketNumbers = Array.from({ length: totalTickets }, (_, i) => i + 1);
   const vipTicketNumbers = Array.from({ length: totalVipTickets }, (_, i) => i + 1);
 
   const navigate = useNavigate();
+
+  // This useEffect runs only once, when the component mounts.
+  useEffect(() => {
+    console.log("area.length: ", area.length);
+    // If no area is choosen in the booking store - clear store values, and navigate.
+    {
+      area.length <= 0 && resetFlow();
+      area.length <= 0 && navigate(ERoutes.BUY_TICKET);
+    }
+  }, []);
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),

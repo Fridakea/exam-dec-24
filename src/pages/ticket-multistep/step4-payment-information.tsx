@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useBookingStore } from "@/stores/booking-store";
 import { ERoutes } from "@/main";
 
 import { Button } from "@/components/ui/button";
@@ -10,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
 import { Basket } from "@/components/Basket";
-import { useBookingStore } from "@/stores/booking-store";
 
 const formSchema = z.object({
   cardholder_name: z.string().min(2, "Navnet skal være mindst 2 bogstaver"),
@@ -26,8 +27,18 @@ const dateRegex = "^(0[1-9]?|1[0-2]?)?\\d{0,2}$";
 export const Step4PaymentInformationPage = () => {
   const navigate = useNavigate();
 
-  const { paymentInfo, setPaymentInfo } = useBookingStore();
+  const { area, paymentInfo, setPaymentInfo, resetFlow } = useBookingStore();
   const { cardholder_name, card_number, expiration, cvc } = paymentInfo;
+
+  // This useEffect runs only once, when the component mounts.
+  useEffect(() => {
+    console.log("area.length: ", area.length);
+    // If no area is choosen in the booking store - clear store values, and navigate.
+    {
+      area.length <= 0 && resetFlow();
+      area.length <= 0 && navigate(ERoutes.BUY_TICKET);
+    }
+  }, []);
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),

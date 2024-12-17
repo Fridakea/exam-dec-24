@@ -1,16 +1,27 @@
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useBookingStore } from "@/stores/booking-store";
+import { postFullfill } from "@/lib/api";
 
 import { Button } from "@/components/ui/button";
 import { ERoutes } from "@/main";
 import { BasketSection } from "@/components/BasketSection";
-import { useBookingStore } from "@/stores/booking-store";
-import { postFullfill } from "@/lib/api";
 
 export const Step5ConfirmationPage = () => {
   const navigate = useNavigate();
 
-  const { paymentInfo, reservationId } = useBookingStore();
+  const { area, paymentInfo, reservationId, resetFlow } = useBookingStore();
   const { cardholder_name, card_number, expiration, cvc } = paymentInfo;
+
+  // This useEffect runs only once, when the component mounts.
+  useEffect(() => {
+    console.log("area.length: ", area.length);
+    // If no area is choosen in the booking store - clear store values, and navigate.
+    {
+      area.length <= 0 && resetFlow();
+      area.length <= 0 && navigate(ERoutes.BUY_TICKET);
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (!reservationId) {
