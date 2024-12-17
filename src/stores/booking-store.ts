@@ -34,6 +34,8 @@ type BookingState = {
 
   reservationId: string | null;
   setReservationId: (newValue: string | null) => void;
+
+  resetFlow: () => void;
 };
 
 export const useBookingStore = create<BookingState>((set, get) => ({
@@ -81,4 +83,27 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
   reservationId: null,
   setReservationId: (newValue) => set({ reservationId: newValue }),
+
+  resetFlow: () =>
+    set({
+      totalTickets: 0,
+      totalVipTickets: 0,
+      area: "",
+
+      addons: {
+        greenCamping: false,
+        chairs: 0,
+        pavillons: 0,
+        smallTents: 0,
+        mediumTents: 0,
+        largeTents: 0,
+      },
+      paymentInfo: {
+        cardholder_name: "",
+        card_number: undefined,
+        expiration: "",
+        cvc: undefined,
+      },
+      reservationId: null,
+    }),
 }));

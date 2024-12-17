@@ -27,7 +27,7 @@ export const Step2BuyAddonsPage = () => {
   const navigate = useNavigate();
 
   // TODO save the addons the user chooses
-  const { setAddons } = useBookingStore();
+  const { area, setAddons, resetFlow } = useBookingStore();
 
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -43,6 +43,13 @@ export const Step2BuyAddonsPage = () => {
 
   // This useEffect runs only once, when the component mounts.
   useEffect(() => {
+    console.log("area.length: ", area.length);
+    // If no area is choosen in the booking store - clear store values, and navigate.
+    {
+      area.length < 1 && resetFlow();
+      area.length < 1 && navigate(ERoutes.BUY_TICKET);
+    }
+
     // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
     formObject.watch(() => {
       setAddons(formObject.getValues());

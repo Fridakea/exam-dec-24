@@ -1,12 +1,17 @@
-import { Link, Outlet } from "react-router-dom";
-import { ERoutes } from "@/main";
-import { Logo } from "@/assets/img/logo-export";
-import { formatSeconds, useCountdownStore } from "@/stores/use-countdown-store";
-import { twMerge } from "tailwind-merge";
+import { useNavigate } from "react-router";
 import { useEffect } from "react";
+import { Link, Outlet } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
+import { ERoutes } from "@/main";
+import { formatSeconds, useCountdownStore } from "@/stores/use-countdown-store";
+
+import { Logo } from "@/assets/img/logo-export";
+import { useBookingStore } from "@/stores/booking-store";
 
 export const TicketFlowLayout = () => {
   const { remainingSeconds, hasCountdownFinished, setHasCountdownFinished, stopCountdown } = useCountdownStore();
+  const { resetFlow } = useBookingStore();
+  const navigate = useNavigate();
 
   const { minutes, seconds } = formatSeconds(remainingSeconds);
 
@@ -17,7 +22,9 @@ export const TicketFlowLayout = () => {
       setHasCountdownFinished(false);
       stopCountdown();
 
-      // TODO: Clear store values, and navigate. Make clearStore function in the store.
+      // Clear store values, and navigate.
+      resetFlow();
+      navigate(`${ERoutes.BUY_TICKET}`);
     }
   }, [hasCountdownFinished]);
 
