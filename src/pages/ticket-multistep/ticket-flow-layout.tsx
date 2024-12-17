@@ -34,10 +34,10 @@ export const TicketFlowLayout = () => {
           <h3>15-21 juli</h3>
         </nav>
       </header>
-      <main className="max-w-screen mx-auto p-4 sm:max-w-[1200px]">
+      <main className="relative max-w-screen mx-auto p-4 sm:max-w-[1200px]">
         <div className="mb-6">
           {remainingSeconds > 0 && (
-            <p className="w-full text-center flex items-center justify-center gap-2">
+            <p className="w-full absolute top-0 left-0 text-center flex items-center justify-center gap-2">
               Tid til at gennemføre
               <span className={twMerge(remainingSeconds <= 1 ? "text-destructive" : "", "~text-lg/xl font-bold")}>
                 {minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
