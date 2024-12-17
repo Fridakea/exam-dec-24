@@ -13,13 +13,22 @@ export const ArtistPage = () => {
   const { error: sError, isPending: isSPending, data: schedule } = useFetch<ScheduleData>(`${apiBaseUrl}/schedule`);
 
   const [bandPerformanceData, setBandPerformanceData] = useState<BandPerformanceData | null>(null);
-
-  const lastMember = band?.members[band.members.length - 1];
+  const totalMembers = band?.members.length;
 
   useEffect(() => {
     if (!schedule || !band) return;
     setBandPerformanceData(getBandPerformanceData(schedule, band.name));
   }, [schedule, band]);
+
+  const dayMap: { [key: string]: string } = {
+    mon: "Mandag",
+    tue: "Tirsdag",
+    wed: "Onsdag",
+    thu: "Torsdag",
+    fri: "Fredag",
+    sat: "Lørdag",
+    sun: "Søndag",
+  };
 
   return (
     <div>
@@ -39,7 +48,7 @@ export const ArtistPage = () => {
             <img
               src={`${apiBaseUrl}/logos/${band.logo}`}
               alt={band.logoCredits}
-              className="w-full h-52 object-cover sm:h-full sm:w-52 sm:flex-1"
+              className="w-full h-52 object-cover sm:h-full sm:w-2/5 sm:flex-1"
             />
 
             <div className="sm:flex-[2]">
@@ -49,21 +58,23 @@ export const ArtistPage = () => {
                 <Link to={`${ERoutes.SCHEDULE}/${band.slug}`}>{band.name}</Link>
               </div>
 
-              <h1 className="mb-5">{band.name}</h1>
-              <div className="flex gap-2 items-center mb-5">
-                <h2>
-                  {bandPerformanceData.day} Kl. {bandPerformanceData.start}
-                </h2>
+              <h1 className="~text-5xl/6xl">{band.name}</h1>
+              <div className="flex gap-2 items-center mb-4 *:~text-lg/xl *:text-accent">
+                <h2>{`${dayMap[bandPerformanceData.day]} Kl. ${bandPerformanceData.start}`}</h2>
                 <h2 className="mt-1">*</h2>
                 <h2>På {bandPerformanceData.scene}</h2>
               </div>
-              <p>{band.bio}</p>
-              <h3>Genre: {band.genre}</h3>
-              <h3>
+              <h3>Hvem er {band.name}?</h3>
+              <p className="mb-4">{band.bio}</p>
+              <h3 className="text-card">
+                Genre: <span className="normal-case text-foreground">{band.genre}.</span>
+              </h3>
+              <h3 className="text-card">
                 Medlemmer:
-                {band.members.map((member) => {
-                  !lastMember ? member + "," : member;
-                })}
+                <span className="normal-case text-foreground">
+                  {band.members &&
+                    band.members.map((member, i) => (i + 1 !== totalMembers ? ` ${member},` : ` ${member}.`))}
+                </span>
               </h3>
             </div>
           </section>

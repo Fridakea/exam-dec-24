@@ -39,7 +39,7 @@ export const SchedulePage = () => {
               <img
                 src={`${apiBaseUrl}/logos/${band.logo}`}
                 alt={band.logoCredits}
-                className="w-full h-48 object-cover transition-all hover:scale-105"
+                className="w-full h-52 sm:h-72 object-cover transition-all hover:scale-105"
               />
               <h2 className="~text-xl/2xl text-center">{band.name}</h2>
             </Link>
