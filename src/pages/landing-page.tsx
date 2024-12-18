@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
+import heroImg from "@/assets/img/hero.webp";
 import { ArrowDown } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -33,7 +34,7 @@ export const LandingPage = () => {
       <section className="h-[77vh] sm:h-[80vh] flex flex-col justify-between items-center">
         <div className="w-full h-full brightness-[0.45] absolute top-0 left-0 -z-10">
           <img
-            src="/src/assets/img/hero.webp"
+            src={heroImg}
             alt="Koncert billede"
             className="w-full h-full object-cover brightness-[0.25] absolute top-0 left-0 -z-20"
           />

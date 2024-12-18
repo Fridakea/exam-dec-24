@@ -13,6 +13,11 @@ import { Link, useParams } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { findBandImage } from "@/lib/helpers";
+import { twMerge } from "tailwind-merge";
+
+const cssClasses = {
+  breadcrumb: "mb-4 flex gap-2 items-center text-muted-foreground sm:hidden",
+};
 
 export const ArtistPage = () => {
   const { slug } = useParams();
@@ -33,16 +38,30 @@ export const ArtistPage = () => {
       {error && <div>{error}</div>}
       {sError && <div>{sError}</div>}
 
-      {(isPending || isSPending) && <LoadingSpinner />}
+      {(isPending || isSPending) && (
+        <div>
+          <div className={twMerge("w-[65%] h-5 skeleton", cssClasses.breadcrumb)} />
+          <section className="sm:h-[75vh] flex flex-col gap-10 sm:flex-row sm:gap-20">
+            <div className="skeleton w-full h-52 sm:h-full sm:w-2/5" />
+            <div className="mb-10 sm:w-1/2">
+              <div className="hidden sm:inline-block skeleton w-full h-6 mb-8" />
+              <div className="skeleton w-full h-12 mb-2 sm:h-14" />
+              <div className="skeleton w-full h-6 mb-5" />
+              <div className="skeleton w-full h-[50vh] sm:h-[56.5vh]" />
+              {/* <div className="skeleton" /> */}
+            </div>
+          </section>
+        </div>
+      )}
       {band && bandPerformanceData && (
         <div>
-          <div className="mb-4 flex gap-2 items-center text-muted-foreground sm:hidden">
+          <div className={cssClasses.breadcrumb}>
             <Link to={ERoutes.SCHEDULE}>Program</Link>
             <ChevronRight />
             <Link to={`${ERoutes.SCHEDULE}/${band.slug}`}>{band.name}</Link>
           </div>
 
-          <section className="h-[75vh] flex flex-col gap-10 sm:flex-row sm:gap-20">
+          <section className="sm:h-[75vh] !mb-10 flex flex-col gap-10 sm:flex-row sm:gap-20">
             <img
               src={findBandImage(band.logo)}
               alt={band.logoCredits}
