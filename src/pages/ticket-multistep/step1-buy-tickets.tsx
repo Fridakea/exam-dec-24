@@ -125,7 +125,14 @@ export const Step1BuyTicketsPage = () => {
                 </div>
 
                 <div className="flex flex-row flex-wrap gap-4">
-                  {isPending && <LoadingSpinner />}
+                  {isPending && (
+                    <div className="w-full h-fit flex flex-wrap gap-4">
+                      <div className="skeleton w-40 h-20 lg:w-[163px]" />
+                      <div className="skeleton w-32 h-20 lg:w-[143px]" />
+                      <div className="skeleton w-36 h-20 lg:w-[150px]" />
+                      <div className="skeleton w-40 h-20 lg:w-[160px]" />
+                    </div>
+                  )}
                   {error && <p>{error}</p>}
 
                   {dataAreas

@@ -7,6 +7,7 @@ import { dayNames, EnrichedScheduleData, getEnrichedSchedule } from "@/lib/api";
 import { findBandImage } from "@/lib/helpers";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { twMerge } from "tailwind-merge";
 
 export const SchedulePage = () => {
   const [enrichedScheduleData, setEnrichedScheduleData] = useState<EnrichedScheduleData | null>(null);
@@ -31,14 +32,20 @@ export const SchedulePage = () => {
 
   const sceneArray = ["Midgard", "Vanaheim", "Jotunheim"];
 
+  const cssClasses = {
+    bandsGrid: "mb-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-3 lg:gap-x-8 sm:gap-y-5",
+  };
+
   return (
     <div className="flex flex-col">
       <h1 className="mb-8">Program</h1>
-      <div className="flex flex-col lg:flex-row lg:gap-10">
-        <div className="mb-4 flex-1 flex gap-4 items-center">
-          <Label htmlFor="seacrh" className="~text-lg/xl">
-            Søg
-          </Label>
+      <div className="flex flex-col lg:flex-row lg:gap-20 lg:items-start">
+        <div className="flex-1 mb-4">
+          <div className="mb-2">
+            <Label htmlFor="seacrh" className="~text-lg/xl">
+              Søg
+            </Label>
+          </div>
           <Input
             id="search"
             type="search"
@@ -49,8 +56,8 @@ export const SchedulePage = () => {
           />
         </div>
 
-        <div className="mb-4 flex-[2] flex flex-col sm:flex-row gap-4 items-center">
-          <h3>Scener</h3>
+        <div className="mb-4 flex-[1.5]">
+          <h3 className="mb-2">Scener</h3>
           <div className="w-full flex justify-around lg:justify-between">
             <Button
               variant="outline"
@@ -89,7 +96,26 @@ export const SchedulePage = () => {
       </div>
 
       {apiError && <div>{apiError}</div>}
-      {isLoading && <LoadingSpinner />}
+      {isLoading && (
+        <section>
+          <div className="skeleton w-28 h-8 my-2 sm:w-32 sm:mt-0" />
+          <div className="skeleton w-32 h-4 mb-4 sm:h-5 sm:w-36" />
+          <div className={cssClasses.bandsGrid}>
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+            <div className="skeleton w-full h-40 sm:h-52" />
+          </div>
+        </section>
+      )}
       {enrichedScheduleData &&
         Object.entries(enrichedScheduleData).map(([_, bands], i) =>
           !bands.some((band) => band.name.toLowerCase().includes(searchValue.toLowerCase())) ? (
@@ -99,7 +125,7 @@ export const SchedulePage = () => {
               <h2>{dayNames[i]}</h2>
               <p className="text-muted-foreground mb-4">{bands.length} bands spiller</p>
 
-              <div className="mb-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-3 lg:gap-x-8 sm:gap-y-5">
+              <div className={cssClasses.bandsGrid}>
                 {bands
                   .filter((band) => band.name.toLowerCase().includes(searchValue.toLowerCase()))
                   .filter((band) => band.scene.includes(sceneFilter))
@@ -107,7 +133,7 @@ export const SchedulePage = () => {
                     <Link
                       to={`${ERoutes.BAND}/${band.slug}`}
                       key={i}
-                      className="relative w-full h-full inline-flex flex-col gap-2"
+                      className="relative w-full h-full inline-flex flex-col gap-2 transition-all hover:text-accent hover:scale-110"
                     >
                       <p className="absolute right-3 top-1 font-nova-cut text-accent-foreground ~text-2xl/4xl z-10">
                         {band.scene[0]}
@@ -115,7 +141,7 @@ export const SchedulePage = () => {
                       <img
                         src={findBandImage(band.logo)}
                         alt={band.logoCredits}
-                        className="w-full h-40 sm:h-52 object-cover brightness-50 grayscale-[50%] transition-all hover:scale-105 hover:brightness-75"
+                        className="w-full h-40 sm:h-52 object-cover brightness-50 grayscale-[50%] hover:brightness-75"
                       />
                       <h3 className="text-center truncate">{band.name}</h3>
                     </Link>
