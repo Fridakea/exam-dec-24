@@ -55,7 +55,8 @@ export type BandPerformanceData = {
   scene: string;
 };
 
-// This function loops over all acts on all days in all scenes, to find the bands performance. Its a lot of looping.
+// With help from ChatGPT
+// This function loops over all acts on all days in all scenes, to find the bands performance.
 export const getBandPerformanceData = (schedule: ScheduleData, bandName: string): BandPerformanceData | null => {
   // Iterate over each scene
   for (const [scene, days] of Object.entries(schedule)) {
@@ -132,6 +133,7 @@ type EnrichedBandData = {
 
 export type EnrichedScheduleData = Record<Day, EnrichedBandData[]>;
 
+// With help from ChatGPTs
 export const getEnrichedSchedule = async (): Promise<EnrichedScheduleData> => {
   const bandsResponse = await fetch(`${apiBaseUrl}/bands`);
   const bandsData: BandData[] = await bandsResponse.json();
@@ -139,7 +141,6 @@ export const getEnrichedSchedule = async (): Promise<EnrichedScheduleData> => {
   const scheduleResponse = await fetch(`${apiBaseUrl}/schedule`);
   const scheduleData: ScheduleData = await scheduleResponse.json();
 
-  // TODO: Combine bands into schedule.
   const enrichedSchedule: EnrichedScheduleData = {
     mon: [],
     tue: [],
@@ -150,7 +151,6 @@ export const getEnrichedSchedule = async (): Promise<EnrichedScheduleData> => {
     sun: [],
   };
 
-  // With help from ChatGPT
   // Iterate over each scene in the schedule
   for (const [scene, days] of Object.entries(scheduleData)) {
     // Iterate over each day in the scene
