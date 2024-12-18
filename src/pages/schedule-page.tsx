@@ -1,20 +1,29 @@
-import { useMemo, useState } from "react";
-import useFetch from "@/hooks/use-fetch";
+import { useEffect, useState } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ERoutes } from "@/main";
-import { apiBaseUrl, BandData } from "@/lib/api";
-
-// import { PiHeartStraight } from "react-icons/pi";
-import { Heart } from "lucide-react";
+import { apiBaseUrl, BandData, dayNames, EnrichedScheduleData, getEnrichedSchedule } from "@/lib/api";
+import { findBandImage } from "@/lib/helpers";
 
 export const SchedulePage = () => {
-  const { error, isPending, data } = useFetch<BandData[]>(`${apiBaseUrl}/bands`);
-  const [amountOfDataShown, setAmountOfDataShown] = useState(12);
+  const [enrichedScheduleData, setEnrichedScheduleData] = useState<EnrichedScheduleData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
-  // "Cacher" den slicede data, indtil amountOfDataShown eller data ændrer sig.
-  const slicedData = useMemo(() => data?.slice(0, amountOfDataShown), [amountOfDataShown, data]);
+  useEffect(() => {
+    setIsLoading(true);
+    getEnrichedSchedule()
+      .then((data) => {
+        setEnrichedScheduleData(data);
+        setApiError(null);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setApiError(error);
+        setIsLoading(false);
+      });
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -23,41 +32,33 @@ export const SchedulePage = () => {
         <p>Søg og filter...</p>
       </div>
 
-      <section className="mb-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-        {error && <div>{error}</div>}
-        {isPending && <LoadingSpinner />}
-        {slicedData?.map((band: any, i: number) => {
-          return (
-            <Link
-              to={`${ERoutes.BAND}/${band.slug}`}
-              key={i}
-              className="relative w-full h-full p-2 inline-flex flex-col gap-2"
-            >
-              <Button variant="link" className="absolute -right-1 top-1 bg-transparent text-accent z-10">
-                <Heart className="!w-10 !h-10" />
-              </Button>
-              <img
-                src={`${apiBaseUrl}/logos/${band.logo}`}
-                alt={band.logoCredits}
-                className="w-full h-52 sm:h-72 object-cover transition-all hover:scale-105"
-              />
-              <h2 className="~text-xl/2xl text-center">{band.name}</h2>
-            </Link>
-          );
-        })}
-      </section>
+      {apiError && <div>{apiError}</div>}
+      {isLoading && <LoadingSpinner />}
+      {enrichedScheduleData &&
+        Object.entries(enrichedScheduleData).map(([_, bands], i) => (
+          <section key={i}>
+            <h2>{dayNames[i]}</h2>
+            <p className="text-muted-foreground mb-4">{bands.length} bands spiller</p>
 
-      {!isPending && (
-        <Button
-          size="lg"
-          variant="accent"
-          className="self-end"
-          onClick={() => setAmountOfDataShown(amountOfDataShown + 12)}
-          disabled={!data || amountOfDataShown >= data.length}
-        >
-          Vis flere
-        </Button>
-      )}
+            <div className="mb-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-5">
+              {bands.map((band, i) => (
+                <Link
+                  to={`${ERoutes.BAND}/${band.slug}`}
+                  key={i}
+                  className="relative w-full h-full inline-flex flex-col gap-2"
+                >
+                  <p className="absolute right-2 top-0 bg-transparent text-accent z-10">{band.scene}</p>
+                  <img
+                    src={findBandImage(band.logo)}
+                    alt={band.logoCredits}
+                    className="w-full h-52 sm:h-72 object-cover transition-all hover:scale-105"
+                  />
+                  <h3 className="text-center">{band.name}</h3>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
     </div>
   );
 };

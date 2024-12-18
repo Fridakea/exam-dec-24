@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+// With help from ChatGPT
 // A local zustand, to keep track of the shared timer across the app.
 type CountdownStore = {
   remainingSeconds: number;

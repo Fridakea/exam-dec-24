@@ -14,7 +14,7 @@ import { PlusMinusInput } from "@/components/PlusMinusInput";
 import { RadioCard } from "@/components/RadioCard";
 import { Basket } from "@/components/Basket";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { useCountdownStore } from "@/stores/use-countdown-store";
+import { useCountdownStore } from "@/stores/countdown-store";
 
 const formSchema = z.object({
   ticket_amount: z.number().int().min(0).max(20),

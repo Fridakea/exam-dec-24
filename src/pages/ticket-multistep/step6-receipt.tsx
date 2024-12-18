@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { TicketIcon } from "@/assets/icons";
 import { Button } from "@/components/ui/button";
 import { BasketSection } from "@/components/BasketSection";
-import { useCountdownStore } from "@/stores/use-countdown-store";
+import { useCountdownStore } from "@/stores/countdown-store";
 import { useEffect } from "react";
 
 export const Step6ReceiptPage = () => {

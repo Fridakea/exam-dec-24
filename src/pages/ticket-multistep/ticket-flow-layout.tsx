@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import { ERoutes } from "@/main";
-import { formatSeconds, useCountdownStore } from "@/stores/use-countdown-store";
+import { formatSeconds, useCountdownStore } from "@/stores/countdown-store";
 
 import { Logo } from "@/assets/img/logo-export";
 import { useBookingStore } from "@/stores/booking-store";

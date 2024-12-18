@@ -31,6 +31,17 @@ type ScheduleAct = {
 type Scene = "Midgard" | "Vanaheim" | "Jotunheim";
 type Day = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
+export const dayNamesObject: Record<Day, string> = {
+  mon: "Mandag",
+  tue: "Tirsdag",
+  wed: "Onsdag",
+  thu: "Torsdag",
+  fri: "Fredag",
+  sat: "Lørdag",
+  sun: "Søndag",
+};
+export const dayNames = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag"];
+
 // A "Record" is like an object. It takes two types, the first is the property names, the second is the value types.
 // So { name: string; email: string; } is the same as Record<"name" | "email", string>.
 // Its useful when you have many properties, with the same value types.
@@ -38,7 +49,7 @@ export type ScheduleData = Record<Scene, Record<Day, ScheduleAct[]>>;
 
 export type BandPerformanceData = {
   name: string;
-  day: string;
+  day: Day;
   start: string;
   end: string;
   scene: string;
@@ -55,7 +66,7 @@ export const getBandPerformanceData = (schedule: ScheduleData, bandName: string)
         if (act.act === bandName) {
           return {
             name: bandName,
-            day: day, // Day of the week
+            day: day as Day, // Day of the week
             start: act.start,
             end: act.end,
             scene: scene, // Scene name
@@ -103,4 +114,67 @@ export const postFullfill = async (id: string): Promise<PostFullfillResult> => {
     error: response.status > 300,
     message: await response.json(),
   };
+};
+
+type EnrichedBandData = {
+  name: string;
+  members: string[];
+  genre: string;
+  logoCredits: string;
+  logo: string;
+  bio: string;
+  slug: string;
+  // Extra stuff
+  scene: string;
+  start: string;
+  end: string;
+};
+
+export type EnrichedScheduleData = Record<Day, EnrichedBandData[]>;
+
+export const getEnrichedSchedule = async (): Promise<EnrichedScheduleData> => {
+  const bandsResponse = await fetch(`${apiBaseUrl}/bands`);
+  const bandsData: BandData[] = await bandsResponse.json();
+
+  const scheduleResponse = await fetch(`${apiBaseUrl}/schedule`);
+  const scheduleData: ScheduleData = await scheduleResponse.json();
+
+  // TODO: Combine bands into schedule.
+  const enrichedSchedule: EnrichedScheduleData = {
+    mon: [],
+    tue: [],
+    wed: [],
+    thu: [],
+    fri: [],
+    sat: [],
+    sun: [],
+  };
+
+  // With help from ChatGPT
+  // Iterate over each scene in the schedule
+  for (const [scene, days] of Object.entries(scheduleData)) {
+    // Iterate over each day in the scene
+    for (const [day, acts] of Object.entries(days)) {
+      // Iterate over each act in the day's schedule
+      for (const act of acts) {
+        // Find the matching band in the bandsData
+        const band = bandsData.find((b) => b.name === act.act);
+
+        if (band) {
+          // Combine the band data with the schedule information
+          const enrichedBand: EnrichedBandData = {
+            ...band,
+            scene,
+            start: act.start,
+            end: act.end,
+          };
+
+          // Add the enriched band data to the corresponding day
+          enrichedSchedule[day as Day].push(enrichedBand);
+        }
+      }
+    }
+  }
+
+  return enrichedSchedule;
 };

@@ -1,10 +1,18 @@
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import useFetch from "@/hooks/use-fetch";
-import { apiBaseUrl, BandData, BandPerformanceData, getBandPerformanceData, ScheduleData } from "@/lib/api";
+import {
+  apiBaseUrl,
+  BandData,
+  BandPerformanceData,
+  dayNamesObject,
+  getBandPerformanceData,
+  ScheduleData,
+} from "@/lib/api";
 import { ERoutes } from "@/main";
 import { Link, useParams } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { findBandImage } from "@/lib/helpers";
 
 export const ArtistPage = () => {
   const { slug } = useParams();
@@ -20,16 +28,6 @@ export const ArtistPage = () => {
     setBandPerformanceData(getBandPerformanceData(schedule, band.name));
   }, [schedule, band]);
 
-  const dayMap: { [key: string]: string } = {
-    mon: "Mandag",
-    tue: "Tirsdag",
-    wed: "Onsdag",
-    thu: "Torsdag",
-    fri: "Fredag",
-    sat: "Lørdag",
-    sun: "Søndag",
-  };
-
   return (
     <div>
       {error && <div>{error}</div>}
@@ -44,9 +42,9 @@ export const ArtistPage = () => {
             <Link to={`${ERoutes.SCHEDULE}/${band.slug}`}>{band.name}</Link>
           </div>
 
-          <section className="h-[80vh] flex flex-col gap-10 sm:flex-row sm:gap-20">
+          <section className="h-[75vh] flex flex-col gap-10 sm:flex-row sm:gap-20">
             <img
-              src={`${apiBaseUrl}/logos/${band.logo}`}
+              src={findBandImage(band.logo)}
               alt={band.logoCredits}
               className="w-full h-52 object-cover sm:h-full sm:w-2/5 sm:flex-1"
             />
@@ -60,7 +58,7 @@ export const ArtistPage = () => {
 
               <h1 className="~text-5xl/6xl">{band.name}</h1>
               <div className="flex gap-2 items-center mb-4 *:~text-lg/xl *:text-accent">
-                <h2>{`${dayMap[bandPerformanceData.day]} Kl. ${bandPerformanceData.start}`}</h2>
+                <h2>{`${dayNamesObject[bandPerformanceData.day]} Kl. ${bandPerformanceData.start}`}</h2>
                 <h2 className="mt-1">*</h2>
                 <h2>På {bandPerformanceData.scene}</h2>
               </div>

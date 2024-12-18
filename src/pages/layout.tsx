@@ -12,7 +12,7 @@ export const Layout = () => {
 
   return (
     <>
-      <header className="pt-2 pb-4 px-4 max-w-[1200px] mx-auto flex flex-row items-center justify-between">
+      <header className="pt-5 pb-10 px-4 max-w-[1200px] mx-auto flex flex-row items-center justify-between">
         <Link to={ERoutes.HOME} onClick={() => setIsMenuOpen(false)}>
           <div className="flex gap-2 items-center">
             <Logo className="w-24 sm:w-32 transition-all hover:text-accent" />
