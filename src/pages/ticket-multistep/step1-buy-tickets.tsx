@@ -25,7 +25,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const Step1BuyTicketsPage = () => {
   const navigate = useNavigate();
-  const { startCountdown } = useCountdownStore();
+  const { startCountdown, stopCountdown } = useCountdownStore();
 
   const { error, isPending, data: dataAreas } = useFetch<AreaData[]>(`${apiBaseUrl}/available-spots`);
 
@@ -45,9 +45,9 @@ export const Step1BuyTicketsPage = () => {
 
   // This useEffect runs only once, when the component mounts.
   useEffect(() => {
+    stopCountdown();
     // Changes the value of values, every time the form changes. See https://react-hook-form.com/docs/useform/watch
     formObject.watch(() => {
-      console.log(formObject.getValues());
       setTotalTickets(formObject.getValues().ticket_amount);
       setTotalVipTickets(formObject.getValues().vip_ticket_amount);
       setArea(formObject.getValues().area);
@@ -62,7 +62,6 @@ export const Step1BuyTicketsPage = () => {
     setArea(formObject.getValues().area);
 
     const response = await putReserve(formObject.getValues().area, amount);
-    console.log(response);
     startCountdown(response.timeout / 1000);
     setReservationId(response.id);
 

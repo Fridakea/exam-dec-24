@@ -11,6 +11,7 @@ import { useBookingStore } from "@/stores/booking-store";
 import { Label } from "@/components/ui/label";
 import { Basket } from "@/components/Basket";
 import { useEffect } from "react";
+import { MyRegexes } from "@/lib/helpers";
 
 const formSchema = z.object({
   contact_info: z.array(
@@ -35,7 +36,6 @@ export const Step3ContactInformationPage = () => {
 
   // This useEffect runs only once, when the component mounts.
   useEffect(() => {
-    console.log("area.length: ", area.length);
     // If no area is choosen in the booking store - clear store values, and navigate.
     {
       area.length <= 0 && resetFlow();
@@ -68,16 +68,13 @@ export const Step3ContactInformationPage = () => {
     );
   };
 
-  const handleSubmit = (values: FormData) => {
-    console.log(values);
+  const handleSubmit = (_: FormData) => {
     navigate(`${ERoutes.BUY_TICKET}/4`);
   };
 
   // For debugging
   useEffect(() => {
-    console.log("Default values: ", formObject.getValues());
     formObject.watch(() => {
-      console.log(formObject.getValues());
       const result = formSchema.safeParse(formObject.getValues());
 
       if (!result.success) console.log(result.error.errors);
@@ -115,11 +112,14 @@ export const Step3ContactInformationPage = () => {
                                   <Input
                                     value={field.value[ticket - 1]?.first_name}
                                     required
-                                    onChange={(e) =>
+                                    inputMode="text"
+                                    autoComplete="given-name"
+                                    onChange={(e) => {
+                                      if (!MyRegexes.onlyText.test(e.currentTarget.value)) return;
                                       field.onChange(
                                         getUpdatedContactInfo("first_name", e.currentTarget.value, ticket, field.value)
-                                      )
-                                    }
+                                      );
+                                    }}
                                     type="text"
                                   />
                                 </div>
@@ -129,11 +129,14 @@ export const Step3ContactInformationPage = () => {
                                   <Input
                                     value={field.value[ticket - 1]?.last_name}
                                     required
-                                    onChange={(e) =>
+                                    inputMode="text"
+                                    autoComplete="family-name"
+                                    onChange={(e) => {
+                                      if (!MyRegexes.onlyText.test(e.currentTarget.value)) return;
                                       field.onChange(
                                         getUpdatedContactInfo("last_name", e.currentTarget.value, ticket, field.value)
-                                      )
-                                    }
+                                      );
+                                    }}
                                     type="text"
                                   />
                                 </div>
@@ -145,12 +148,16 @@ export const Step3ContactInformationPage = () => {
                                   <Input
                                     value={field.value[ticket - 1]?.telephone}
                                     required
+                                    inputMode="tel"
+                                    autoComplete="tel"
                                     className="max-w-[65%] sm:max-w-full"
-                                    onChange={(e) =>
+                                    onChange={(e) => {
+                                      if (!MyRegexes.onlyNumber.test(e.currentTarget.value)) return;
+
                                       field.onChange(
                                         getUpdatedContactInfo("telephone", e.currentTarget.value, ticket, field.value)
-                                      )
-                                    }
+                                      );
+                                    }}
                                     type="tel"
                                   />
                                 </div>
@@ -160,6 +167,8 @@ export const Step3ContactInformationPage = () => {
                                   <Input
                                     value={field.value[ticket - 1]?.email}
                                     required
+                                    inputMode="email"
+                                    autoComplete="email"
                                     onChange={(e) =>
                                       field.onChange(
                                         getUpdatedContactInfo("email", e.currentTarget.value, ticket, field.value)
@@ -277,7 +286,7 @@ export const Step3ContactInformationPage = () => {
 
           <Button
             size="lg"
-            disabled={!formObject.formState.isValid}
+            // disabled={!formObject.formState.isValid}
             variant="accent"
             className="self-end"
             type="submit"

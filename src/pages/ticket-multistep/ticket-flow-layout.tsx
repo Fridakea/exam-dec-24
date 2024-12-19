@@ -16,7 +16,6 @@ export const TicketFlowLayout = () => {
   const { minutes, seconds } = formatSeconds(remainingSeconds);
 
   useEffect(() => {
-    console.log(hasCountdownFinished);
     if (hasCountdownFinished) {
       window.alert("Time ran out! make a new reservation.");
       setHasCountdownFinished(false);

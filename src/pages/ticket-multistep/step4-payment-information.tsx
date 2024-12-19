@@ -17,7 +17,7 @@ const formSchema = z.object({
   cardholder_name: z.string().min(2, "Navnet skal være mindst 2 bogstaver"),
   card_number: z.number().int().min(16, "Kortnummeret er minimum 16 cifre"),
   expiration: z.string().min(4, "Udløbsdatoen er minimum 4 cifre"),
-  cvc: z.number().int().min(2, "min"),
+  cvc: z.number().int().min(2, "CVC skal være 3 cifre"),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -32,7 +32,6 @@ export const Step4PaymentInformationPage = () => {
 
   // This useEffect runs only once, when the component mounts.
   useEffect(() => {
-    console.log("area.length: ", area.length);
     // If no area is choosen in the booking store - clear store values, and navigate.
     {
       area.length <= 0 && resetFlow();
@@ -52,7 +51,6 @@ export const Step4PaymentInformationPage = () => {
   });
 
   const handleSubmit = (values: FormData) => {
-    console.log(values);
     setPaymentInfo(values);
 
     navigate(`${ERoutes.BUY_TICKET}/5`);
@@ -73,7 +71,7 @@ export const Step4PaymentInformationPage = () => {
                   <FormItem>
                     <FormLabel>Kortholders navn</FormLabel>
                     <FormControl>
-                      <Input {...field} type="text" />
+                      <Input {...field} type="text" inputMode="text" autoComplete="cc-name" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -87,7 +85,13 @@ export const Step4PaymentInformationPage = () => {
                   <FormItem>
                     <FormLabel>Kortnummer</FormLabel>
                     <FormControl>
-                      <Input {...field} type="number" onChange={(e) => field.onChange(Number(e.currentTarget.value))} />
+                      <Input
+                        {...field}
+                        type="number"
+                        inputMode="numeric"
+                        autoComplete="cc-number"
+                        onChange={(e) => field.onChange(Number(e.currentTarget.value))}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -105,7 +109,7 @@ export const Step4PaymentInformationPage = () => {
                       Udløbsdato <span className="text-muted-foreground text-xs">(MM/ÅÅ)</span>
                     </FormLabel>
                     <FormControl>
-                      <InputOTP maxLength={4} pattern={dateRegex} {...field}>
+                      <InputOTP maxLength={4} pattern={dateRegex} inputMode="numeric" autoComplete="cc-exp" {...field}>
                         <InputOTPGroup>
                           <InputOTPSlot index={0} />
                           <InputOTPSlot index={1} />
@@ -132,6 +136,8 @@ export const Step4PaymentInformationPage = () => {
                       <Input
                         {...field}
                         type="number"
+                        inputMode="numeric"
+                        autoComplete="cc-csc"
                         className="max-w-[170px]"
                         onChange={(e) => field.onChange(Number(e.currentTarget.value))}
                       />

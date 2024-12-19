@@ -15,7 +15,6 @@ export const Step5ConfirmationPage = () => {
 
   // This useEffect runs only once, when the component mounts.
   useEffect(() => {
-    console.log("area.length: ", area.length);
     // If no area is choosen in the booking store - clear store values, and navigate.
     {
       area.length <= 0 && resetFlow();

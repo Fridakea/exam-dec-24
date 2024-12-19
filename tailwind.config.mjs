@@ -14,6 +14,7 @@ export default {
     fontSize,
     fontFamily: {
       "nova-cut": ["Nova Cut"],
+      poppins: ["Poppins"],
     },
     extend: {
       borderRadius: {
