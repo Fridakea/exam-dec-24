@@ -290,7 +290,7 @@ export const Step3ContactInformationPage = () => {
 
           <Button
             size="lg"
-            // disabled={!formObject.formState.isValid}
+            disabled={!formObject.formState.isValid}
             variant="accent"
             className="self-end"
             type="submit"

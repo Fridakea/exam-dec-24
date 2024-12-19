@@ -30,8 +30,8 @@ export const LandingPage = () => {
 
   return (
     <>
-      <section className="h-[77vh] sm:h-[80vh] flex flex-col justify-between items-center">
-        <div className="w-full h-full brightness-[0.45] absolute top-0 left-0 -z-10">
+      <section className="h-[73vh] sm:h-[77vh] flex flex-col justify-between items-center">
+        <div className="w-full h-full mb-10 brightness-[0.45] absolute top-0 left-0 -z-10">
           <img
             src={heroImg}
             alt="Koncert billede"
@@ -39,7 +39,7 @@ export const LandingPage = () => {
           />
         </div>
 
-        <div className="h-[65vh] flex flex-col items-center justify-center gap-10 text-center">
+        <div className="h-[65vh] flex flex-col items-center justify-center gap-5 sm:gap-10 text-center">
           <h1 className="max-w-[600px] ~text-6xl/8xl">Foo Festival 2025</h1>
           <h2 className="mb-16 ~text-xl/2xl">Danmarks vikingeby Roskilde</h2>
 
