@@ -16,12 +16,24 @@ type PaymentInfo = {
   cvc: any;
 };
 
+export type TicketInfo = {
+  is_vip: boolean;
+  first_name: string;
+  last_name: string;
+  tel: string;
+  email: string;
+};
+
 type BookingState = {
   totalTickets: number;
   totalVipTickets: number;
-  area: string;
   setTotalTickets: (newAmount: number) => void;
   setTotalVipTickets: (newAmount: number) => void;
+
+  ticketsInfo: TicketInfo[];
+  setTicketsInfo: (newInfos: TicketInfo[]) => void;
+
+  area: string;
   setArea: (newValue: string) => void;
 
   addons: BookingAddons;
@@ -42,9 +54,13 @@ export const useBookingStore = create<BookingState>((set, get) => ({
   // Tickets
   totalTickets: 0,
   totalVipTickets: 0,
-  area: "",
   setTotalTickets: (newAmount) => set({ totalTickets: newAmount }),
   setTotalVipTickets: (newAmount) => set({ totalVipTickets: newAmount }),
+
+  ticketsInfo: [],
+  setTicketsInfo: (newInfo) => set({ ticketsInfo: newInfo }),
+
+  area: "",
   setArea: (newValue) => set(() => ({ area: newValue })),
 
   addons: {

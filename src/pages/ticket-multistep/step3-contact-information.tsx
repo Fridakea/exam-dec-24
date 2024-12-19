@@ -18,8 +18,9 @@ const formSchema = z.object({
     z.object({
       first_name: z.string().min(2, "Fornavnet skal være mindst 2 bogstaver"),
       last_name: z.string().min(2, "Efternavnet skal være mindst 2 bogstaver"),
-      telephone: z.string().min(8, "Et telefon nummer er minimum 8 cifre"),
+      tel: z.string().min(8, "Et telefon nummer er minimum 8 cifre"),
       email: z.string().email("Ugyldig email"),
+      is_vip: z.boolean(),
     })
   ),
 });
@@ -27,7 +28,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const Step3ContactInformationPage = () => {
-  const { totalTickets, totalVipTickets, area, resetFlow } = useBookingStore();
+  const { totalTickets, totalVipTickets, area, resetFlow, setTicketsInfo } = useBookingStore();
 
   const ticketNumbers = Array.from({ length: totalTickets }, (_, i) => i + 1);
   const vipTicketNumbers = Array.from({ length: totalVipTickets }, (_, i) => i + 1);
@@ -46,11 +47,12 @@ export const Step3ContactInformationPage = () => {
   const formObject = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      contact_info: [...ticketNumbers, ...vipTicketNumbers].map((_) => ({
+      contact_info: [...vipTicketNumbers, ...ticketNumbers].map((_, i) => ({
         first_name: "",
         last_name: "",
-        telephone: "",
+        tel: "",
         email: "",
+        is_vip: i < vipTicketNumbers.length,
       })),
     },
     mode: "onTouched",
@@ -58,7 +60,7 @@ export const Step3ContactInformationPage = () => {
 
   // Makes a new list of contact info where the property is updated
   const getUpdatedContactInfo = (
-    propertyName: "first_name" | "last_name" | "telephone" | "email",
+    propertyName: "first_name" | "last_name" | "tel" | "email",
     newValue: any,
     ticket: number,
     contactInfo: any[]
@@ -68,7 +70,8 @@ export const Step3ContactInformationPage = () => {
     );
   };
 
-  const handleSubmit = (_: FormData) => {
+  const handleSubmit = (values: FormData) => {
+    setTicketsInfo(values.contact_info);
     navigate(`${ERoutes.BUY_TICKET}/4`);
   };
 
@@ -77,7 +80,8 @@ export const Step3ContactInformationPage = () => {
     formObject.watch(() => {
       const result = formSchema.safeParse(formObject.getValues());
 
-      if (!result.success) console.log(result.error.errors);
+      // For debugging validation:
+      // if (!result.success) console.log(result.error.errors);
     });
   }, []);
 
@@ -146,7 +150,7 @@ export const Step3ContactInformationPage = () => {
                                 <div className="flex-1">
                                   <label>Telefon</label>
                                   <Input
-                                    value={field.value[ticket - 1]?.telephone}
+                                    value={field.value[ticket - 1]?.tel}
                                     required
                                     inputMode="tel"
                                     autoComplete="tel"
@@ -155,7 +159,7 @@ export const Step3ContactInformationPage = () => {
                                       if (!MyRegexes.onlyNumber.test(e.currentTarget.value)) return;
 
                                       field.onChange(
-                                        getUpdatedContactInfo("telephone", e.currentTarget.value, ticket, field.value)
+                                        getUpdatedContactInfo("tel", e.currentTarget.value, ticket, field.value)
                                       );
                                     }}
                                     type="tel"
@@ -238,12 +242,12 @@ export const Step3ContactInformationPage = () => {
                                 <div className="flex-1">
                                   <label>Telefon</label>
                                   <Input
-                                    value={field.value[ticket + totalVipTickets - 1]?.telephone}
+                                    value={field.value[ticket + totalVipTickets - 1]?.tel}
                                     className="max-w-[65%] sm:max-w-full"
                                     onChange={(e) =>
                                       field.onChange(
                                         getUpdatedContactInfo(
-                                          "telephone",
+                                          "tel",
                                           e.currentTarget.value,
                                           ticket + totalVipTickets,
                                           field.value

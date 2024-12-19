@@ -6,11 +6,12 @@ import { postFullfill } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { ERoutes } from "@/main";
 import { BasketSection } from "@/components/BasketSection";
+import { insertBooking } from "@/lib/supabase";
 
 export const Step5ConfirmationPage = () => {
   const navigate = useNavigate();
 
-  const { area, paymentInfo, reservationId, resetFlow } = useBookingStore();
+  const { area, paymentInfo, addons, reservationId, resetFlow, getTotalPrice, ticketsInfo } = useBookingStore();
   const { cardholder_name, card_number, expiration, cvc } = paymentInfo;
 
   // This useEffect runs only once, when the component mounts.
@@ -29,7 +30,25 @@ export const Step5ConfirmationPage = () => {
     }
     const { error, message } = await postFullfill(reservationId);
     if (error) window.alert(message);
-    navigate(`${ERoutes.BUY_TICKET}/6`);
+    else {
+      const { success, error, newId } = await insertBooking(
+        {
+          area,
+          green_camping: addons.greenCamping,
+          chairs: addons.chairs,
+          pavillons: addons.pavillons,
+          small_tents: addons.smallTents,
+          medium_tents: addons.mediumTents,
+          large_tents: addons.largeTents,
+          total_price: getTotalPrice(),
+          reservation_id: reservationId,
+        },
+        ticketsInfo
+      );
+      console.log(success, error, newId);
+
+      navigate(`${ERoutes.BUY_TICKET}/6`);
+    }
   };
 
   return (
