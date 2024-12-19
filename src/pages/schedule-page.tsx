@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { ERoutes } from "@/main";
@@ -7,7 +6,6 @@ import { dayNames, EnrichedScheduleData, getEnrichedSchedule } from "@/lib/api";
 import { findBandImage } from "@/lib/helpers";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { twMerge } from "tailwind-merge";
 
 export const SchedulePage = () => {
   const [enrichedScheduleData, setEnrichedScheduleData] = useState<EnrichedScheduleData | null>(null);

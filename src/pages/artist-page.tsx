@@ -1,4 +1,3 @@
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import useFetch from "@/hooks/use-fetch";
 import {
   apiBaseUrl,
@@ -48,7 +47,6 @@ export const ArtistPage = () => {
               <div className="skeleton w-full h-12 mb-2 sm:h-14" />
               <div className="skeleton w-full h-6 mb-5" />
               <div className="skeleton w-full h-[50vh] sm:h-[56.5vh]" />
-              {/* <div className="skeleton" /> */}
             </div>
           </section>
         </div>
