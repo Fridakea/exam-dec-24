@@ -4,7 +4,6 @@ import { ERoutes } from "@/main";
 import { formatSeconds, useCountdownStore } from "@/stores/countdown-store";
 import { Link, useNavigate } from "react-router-dom";
 
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/img/hero.webp";
 import { ArrowDown } from "lucide-react";
