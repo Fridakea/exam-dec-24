@@ -6,9 +6,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { Menu } from "lucide-react";
 import { Logo } from "@/assets/img/logo-export";
+// import { Button } from "@/components/ui/button";
 
 export const Layout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const navigate = useNavigate();
 
   return (
     <>
@@ -46,6 +48,27 @@ export const Layout = () => {
       <main className="max-w-[1200px] mx-auto px-6">
         <Outlet />
       </main>
+
+      {/* <footer className="mt-20 mb-10">
+        <div className="max-w-[1200px] px-8 flex flex-col items-center sm:flex-row justify-between">
+          <h4 className="mb-5 text-xl font-semibold sm:hidden">Foo Festival</h4>
+
+          <div className="mb-5">
+            <h5>Kontakt os</h5>
+            <p className="mb-4">info@foofestival.dk</p>
+
+            <h5>Adresse</h5>
+            <p>Roskilde parkvej 1, 4000 Roskilde</p>
+          </div>
+
+          <div className="flex flex-col">
+            <h4 className="hidden sm:inline-block mb-8 text-2xl font-semibold text-right">Foo Festival</h4>
+            <Button size="lg" variant="accent" onClick={() => navigate(`${ERoutes.BUY_TICKET}`)}>
+              Køb billet
+            </Button>
+          </div>
+        </div>
+      </footer> */}
     </>
   );
 };
