@@ -36,7 +36,7 @@ export const Step5ConfirmationPage = () => {
     <section className="flex flex-col">
       <h1 className="mb-8">Din Bestilling</h1>
 
-      <section className="flex flex-col sm:flex-row sm:*:w-[50%] gap-2 sm:gap-12">
+      <section className="flex flex-col sm:flex-row sm:*:w-[50%] gap-2 sm:gap-12 mb-10 sm:mb-0">
         <div className="relative p-8 mb-8 bg-secondary rounded-2xl text-secondary-foreground -z-10">
           <BasketSection />
         </div>
@@ -69,7 +69,7 @@ export const Step5ConfirmationPage = () => {
         </div>
       </section>
 
-      <Button size="lg" variant="accent" className="self-end" onClick={handleSubmit}>
+      <Button size="lg" variant="accent" className="self-end mb-10 sm:mb-0" onClick={handleSubmit}>
         Gennemfør køb
       </Button>
     </section>

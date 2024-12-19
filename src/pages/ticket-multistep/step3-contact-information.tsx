@@ -84,7 +84,7 @@ export const Step3ContactInformationPage = () => {
   return (
     <section className="flex flex-col sm:flex-row gap-10 *:flex-1">
       <Form {...formObject}>
-        <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
+        <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col mb-10 sm:mb-0">
           <h1 className="mb-8">Kontaktoplysninger</h1>
 
           <section className="*:mb-2">

@@ -64,7 +64,7 @@ export const Step2BuyAddonsPage = () => {
   return (
     <section className="flex flex-col sm:flex-row gap-10 *:flex-1">
       <Form {...formObject}>
-        <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
+        <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col mb-10 sm:mb-0">
           <h1 className="mb-8 flex items-start gap-1">
             Tilvalg
             <span className="~text-base/lg -mt-2">(Optional)</span>

@@ -59,7 +59,7 @@ export const Step4PaymentInformationPage = () => {
   return (
     <section className="flex flex-col sm:flex-row gap-10 *:flex-1">
       <Form {...formObject}>
-        <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col">
+        <form onSubmit={formObject.handleSubmit(handleSubmit)} className="flex flex-col mb-10 sm:mb-0">
           <h1 className="mb-8 ~text-3xl/4xl">Betalingsoplysninger</h1>
 
           <section className="flex flex-col payment-flex-row gap-3">
